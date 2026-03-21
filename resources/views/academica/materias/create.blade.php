@@ -10,6 +10,7 @@
     </div>
 
     <div class="bg-white p-6 rounded-xl shadow">
+
         @if ($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 <ul class="list-disc pl-5">
@@ -24,7 +25,7 @@
 
             @csrf
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="flex flex-col gap-6">
 
                 <div>
                     <label class="block text-sm font-medium mb-1">Nombre</label>
@@ -38,36 +39,14 @@
 
                 <div>
                     <label class="block text-sm font-medium mb-1">Profesor</label>
-
-                    <select name="profesor_id" class="w-full border rounded-lg px-4 py-2">
-
+                    <select name="profesor_id" class="w-full border rounded-lg px-4 py-2" required>
+                        <option value ="">Seleccionar Profesor</option>
                         @foreach($profesores as $profesor)
-
-                        <option value="{{ $profesor->id }}">
-                            {{ $profesor->nombre }} {{ $profesor->apellido }}
-                        </option>
-
+                            <option value="{{ $profesor->id }}">
+                                {{ $profesor->nombre }} {{ $profesor->apellido }}
+                            </option>
                         @endforeach
-
                     </select>
-
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-1">Curso</label>
-
-                    <select name="curso_id" class="w-full border rounded-lg px-4 py-2">
-
-                        @foreach($cursos as $curso)
-
-                        <option value="{{ $curso->id }}">
-                            {{ $curso->division }}
-                        </option>
-
-                        @endforeach
-
-                    </select>
-
                 </div>
 
             </div>

@@ -11,70 +11,51 @@
 
     <div class="bg-white p-6 rounded-xl shadow">
 
+        @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('academica.materias.update', $materia) }}" method="POST">
 
             @csrf
             @method('PUT')
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="flex flex-col gap-6">
 
                 <div>
                     <label class="block text-sm font-medium mb-1">Nombre</label>
-
                     <input type="text"
                            name="nombre"
-                           value="{{ $materia->nombre }}"
+                           value="{{ old('nombre', $materia->nombre) }}"
                            class="w-full border rounded-lg px-4 py-2"
                            required>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium mb-1">Código</label>
-
                     <input type="text"
                            name="codigo"
-                           value="{{ $materia->codigo }}"
+                           value="{{ old('codigo', $materia->codigo) }}"
                            class="w-full border rounded-lg px-4 py-2">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium mb-1">Profesor</label>
-
-                    <select name="profesor_id" class="w-full border rounded-lg px-4 py-2">
-
+                    <select name="profesor_id" class="w-full border rounded-lg px-4 py-2" required>
+                        <option value="">Seleccionar Profesor</option>
                         @foreach($profesores as $profesor)
-
-                        <option value="{{ $profesor->id }}"
-                            {{ $materia->profesor_id == $profesor->id ? 'selected' : '' }}>
-
-                            {{ $profesor->nombre }} {{ $profesor->apellido }}
-
-                        </option>
-
+                            <option value="{{ $profesor->id }}"
+                                {{ old('profesor_id', $materia->profesor_id) == $profesor->id ? 'selected' : '' }}>
+                                {{ $profesor->nombre }} {{ $profesor->apellido }}
+                            </option>
                         @endforeach
-
                     </select>
-
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-1">Curso</label>
-
-                    <select name="curso_id" class="w-full border rounded-lg px-4 py-2">
-
-                        @foreach($cursos as $curso)
-
-                        <option value="{{ $curso->id }}"
-                            {{ $materia->curso_id == $curso->id ? 'selected' : '' }}>
-
-                            {{ $curso->division }}
-
-                        </option>
-
-                        @endforeach
-
-                    </select>
-
                 </div>
 
             </div>

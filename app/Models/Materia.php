@@ -16,18 +16,12 @@ class Materia extends Model
     'nombre',
     'codigo',
     'profesor_id',
-    'curso_id',
     'activo'
 ];
 
     public function profesor()
     {
         return $this->belongsTo(Profesor::class);
-    }
-
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class);
     }
 
 }

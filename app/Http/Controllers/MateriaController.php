@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Materia;
 use App\Models\Profesor;
-use App\Models\Curso;
 use Illuminate\Http\Request;
 
 class MateriaController extends Controller
@@ -14,7 +13,7 @@ class MateriaController extends Controller
     {
         $search = $request->search;
 
-        $materias = Materia::with(['profesor', 'curso'])
+        $materias = Materia::with('profesor') // ya no buscamos 'curso'
 
             ->when($search, function ($query) use ($search) {
                 $query->where('nombre', 'like', "%{$search}%");
@@ -26,21 +25,18 @@ class MateriaController extends Controller
         return view('academica.materias.index', compact('materias'));
     }
 
-
-
     public function create()
     {
         $profesores = Profesor::where('activo', true)->get();
-        $cursos = Curso::where('activo', true)->get();
+        // no necesitamos cursos aquí
 
-        return view('academica.materias.create', compact('profesores', 'cursos'));
+        return view('academica.materias.create', compact('profesores'));
     }
-
 
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:materias,nombre',
             'codigo' => 'required|unique:materias,codigo',
             'profesor_id' => 'required|exists:profesores,id',
         ],[
@@ -59,17 +55,13 @@ class MateriaController extends Controller
         return view('academica.materias.show', compact('materia'));
     }
 
-
-
     public function edit(Materia $materia)
     {
         $profesores = Profesor::where('activo', true)->get();
-        $cursos = Curso::where('activo', true)->get();
+        // no necesitamos cursos aquí
 
-        return view('academica.materias.edit', compact('materia', 'profesores', 'cursos'));
+        return view('academica.materias.edit', compact('materia', 'profesores'));
     }
-
-
 
     public function update(Request $request, Materia $materia)
     {
@@ -77,22 +69,18 @@ class MateriaController extends Controller
             'nombre' => 'required|string|max:255',
             'codigo' => 'nullable|string|max:50',
             'profesor_id' => 'required|exists:profesores,id',
-            'curso_id' => 'required|exists:cursos,id',
         ]);
 
         $materia->update([
             'nombre' => $request->nombre,
             'codigo' => $request->codigo,
             'profesor_id' => $request->profesor_id,
-            'curso_id' => $request->curso_id,
         ]);
 
         return redirect()
             ->route('academica.materias.index')
             ->with('success', 'Materia actualizada correctamente.');
     }
-
-
 
     public function destroy(Materia $materia)
     {

@@ -18,11 +18,7 @@ return new class extends Migration
             $table->foreignId('profesor_id')
                   ->constrained('profesores')
                   ->restrictOnDelete();
-
-            $table->foreignId('curso_id')
-                  ->constrained('cursos')
-                  ->restrictOnDelete();
-
+                  
             $table->boolean('activo')->default(true);
 
             $table->timestamps();

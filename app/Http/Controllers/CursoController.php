@@ -117,7 +117,7 @@ class CursoController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'dni' => 'required|string|max:20|unique:solicitudes,dni',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:solicitudes,email',
             'anio' => 'required|integer',
         ]);
 
