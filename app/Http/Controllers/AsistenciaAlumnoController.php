@@ -16,7 +16,7 @@ class AsistenciaAlumnoController extends Controller
     | INDEX
     |---------------------------------------
     */
-    public function index()
+    public function index(Request $request)
     {
         $cursos = Curso::with('nivel')
             ->where('activo',1)
@@ -24,17 +24,58 @@ class AsistenciaAlumnoController extends Controller
             ->get();
 
         $planillas = AsistenciaAlumno::with('curso')
-            ->select(
-                'curso_id',
-                'fecha',
-                DB::raw('count(*) as total')
-            )
-            ->groupBy('curso_id','fecha')
+            ->select('curso_id','fecha','anio', DB::raw('count(*) as total'))
+            ->groupBy('curso_id','fecha','anio')
             ->orderBy('fecha','desc')
             ->get();
 
-        return view('asistencia.asistencia_alumno.index',
-            compact('cursos','planillas'));
+        $errorAlumnos = null;
+
+        if($request->filled('curso_id') && $request->filled('anio')) {
+            $alumnos = Alumno::where('curso_id', $request->curso_id)
+                ->where('anio', $request->anio)
+                ->where('activo',1)
+                ->count();
+
+            if($alumnos === 0) {
+                $errorAlumnos = "El curso o año escolar seleccionado no posee alumnos.";
+            }
+        }
+
+        return view('asistencia.asistencia_alumno.index', compact('cursos','planillas','errorAlumnos'));
+    }
+
+    public function cargarPlanilla(Request $request)
+    {
+        $request->validate([
+            'curso_id' => 'required|exists:cursos,id',
+            'anio' => 'required|integer',
+            'fecha' => 'required|date'
+        ]);
+
+        $alumnos = Alumno::where('curso_id', $request->curso_id)
+                        ->where('anio', $request->anio)
+                        ->where('activo',1)
+                        ->count();
+
+        if($alumnos === 0){
+            return redirect()->route('asistencia.asistencia_alumno.index')
+                            ->with('error', 'El curso o año escolar seleccionado no posee alumnos.');
+        }
+
+        // 🔹 Revisar si ya existe planilla
+        $existe = AsistenciaAlumno::where('curso_id', $request->curso_id)
+                    ->where('fecha', $request->fecha)
+                    ->where('anio', $request->anio)
+                    ->exists();
+
+        if($existe){
+            // Redirigir a solo lectura
+            return redirect()->route('asistencia.asistencia_alumno.edit', $request->only('curso_id','anio','fecha'));
+        }
+
+        // Si no existe, ir a create para cargar planilla nueva
+        return redirect()->route('asistencia.asistencia_alumno.create', $request->only('curso_id','anio','fecha'));
     }
 
     /*
@@ -46,13 +87,14 @@ class AsistenciaAlumnoController extends Controller
     {
         $request->validate([
             'curso_id' => 'required|exists:cursos,id',
-            'fecha' => 'required|date'
+            'fecha' => 'required|date',
+            'anio' => 'required|integer'
         ]);
 
         $curso = Curso::findOrFail($request->curso_id);
         $fecha = $request->fecha;
+        $anio = $request->anio;
 
-        // 🚫 bloquear fechas futuras
         if(Carbon::parse($fecha)->gt(Carbon::today())){
             return redirect()
                 ->route('asistencia.asistencia_alumno.index')
@@ -61,21 +103,23 @@ class AsistenciaAlumnoController extends Controller
 
         $existe = AsistenciaAlumno::where('curso_id',$curso->id)
             ->where('fecha',$fecha)
+            ->where('anio',$anio) // 🔹 filtrar por año
             ->exists();
 
         if($existe){
             return redirect()
                 ->route('asistencia.asistencia_alumno.index')
-                ->with('error','Ya existe una planilla de asistencia para este curso en esa fecha.');
+                ->with('error','Ya existe una planilla de asistencia para este curso en esa fecha y año.');
         }
 
         $alumnos = Alumno::where('curso_id',$curso->id)
+            ->where('anio',$anio) // 🔹 filtrar por año
             ->where('activo',1)
             ->orderBy('apellido')
             ->get();
 
         return view('asistencia.asistencia_alumno.create',
-            compact('curso','fecha','alumnos'));
+            compact('curso','fecha','alumnos','anio'));
     }
 
     /*
@@ -86,6 +130,7 @@ class AsistenciaAlumnoController extends Controller
     public function store(Request $request)
     {
         $fecha = $request->fecha;
+        $anio = $request->anio;
 
         if(Carbon::parse($fecha)->gt(Carbon::today())){
             return redirect()
@@ -97,8 +142,13 @@ class AsistenciaAlumnoController extends Controller
         $request->validate([
             'curso_id'=>'required|exists:cursos,id',
             'fecha'=>'required|date',
+            'anio'=>'required|integer',
             'asistencias'=>'required|array'
         ]);
+
+        if(count($request->asistencias) == 0){
+            return back()->withInput()->with('error','Debe ingresar al menos una asistencia.');
+        }
 
         DB::beginTransaction();
 
@@ -109,7 +159,8 @@ class AsistenciaAlumnoController extends Controller
                 AsistenciaAlumno::create([
                     'alumno_id'=>$alumno_id,
                     'curso_id'=>$request->curso_id,
-                    'fecha'=>$request->fecha,
+                    'fecha'=>$fecha,
+                    'anio'=>$anio, // 🔹 guardar año
                     'estado'=>$estado
                 ]);
             }
@@ -135,21 +186,20 @@ class AsistenciaAlumnoController extends Controller
     */
     public function edit(Request $request)
     {
-        $request->validate([
-            'curso_id'=>'required|exists:cursos,id',
-            'fecha'=>'required|date'
-        ]);
-
-        $curso = Curso::findOrFail($request->curso_id);
+        $curso_id = $request->curso_id;
         $fecha = $request->fecha;
 
-        $asistencias = AsistenciaAlumno::with('alumno')
-            ->where('curso_id',$curso->id)
-            ->where('fecha',$fecha)
-            ->get();
+        // Traemos el curso
+        $curso = Curso::findOrFail($curso_id);
 
-        return view('asistencia.asistencia_alumno.edit',
-            compact('curso','fecha','asistencias'));
+        // Traemos las asistencias con los alumnos y ordenamos por apellido en PHP
+        $asistencias = AsistenciaAlumno::where('curso_id', $curso_id)
+                        ->where('fecha', $fecha)
+                        ->with('alumno') // importante para acceder al alumno
+                        ->get()
+                        ->sortBy(fn($a) => $a->alumno->apellido); // ordena en memoria
+
+        return view('asistencia.asistencia_alumno.edit', compact('curso', 'fecha', 'asistencias'));
     }
 
     /*
@@ -162,6 +212,7 @@ class AsistenciaAlumnoController extends Controller
         $request->validate([
             'curso_id'=>'required|exists:cursos,id',
             'fecha'=>'required|date',
+            'anio'=>'required|integer',
             'asistencias'=>'required|array'
         ]);
 
@@ -174,6 +225,7 @@ class AsistenciaAlumnoController extends Controller
                 AsistenciaAlumno::where('alumno_id',$alumno_id)
                     ->where('curso_id',$request->curso_id)
                     ->where('fecha',$request->fecha)
+                    ->where('anio',$request->anio) // 🔹 filtrar por año
                     ->update([
                         'estado'=>$estado
                     ]);

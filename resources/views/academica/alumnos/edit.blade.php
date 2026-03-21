@@ -90,13 +90,20 @@
             <!-- FECHA NACIMIENTO -->
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">
-                    Fecha de nacimiento
+                    Año Escolar
                 </label>
 
-                <input type="date"
-                       name="fecha_nacimiento"
-                       value="{{ old('fecha_nacimiento', $alumno->fecha_nacimiento) }}"
-                       class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                <select name="anio"
+                        class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                    
+                    @foreach([2026, 2027] as $year)
+                        <option value="{{ $year }}"
+                            {{ old('anio', $alumno->anio) == $year ? 'selected' : '' }}>
+                            {{ $year }}
+                        </option>
+                    @endforeach
+
+                </select>
             </div>
 
             <!-- CURSO -->

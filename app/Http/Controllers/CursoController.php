@@ -8,6 +8,7 @@ use App\Models\Alumno;
 use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 
 class CursoController extends Controller
 {
@@ -39,7 +40,14 @@ class CursoController extends Controller
     {
         $request->validate([
             'nivel_id' => 'required|exists:niveles,id',
-            'division' => 'required|string|max:10',
+            'division' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('cursos')->where(function ($query) use ($request) {
+                    return $query->where('nivel_id', $request->nivel_id);
+                }),
+            ],
             'turno' => 'nullable|string|max:50',
         ]);
 
@@ -119,6 +127,7 @@ class CursoController extends Controller
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
             'dni' => $request->dni,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
             'email' => $request->email,
             'anio' => $request->anio,
             'estado' => 'pendiente',  // Pendiente de aprobación

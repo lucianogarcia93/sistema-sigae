@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Feriado;
 use Illuminate\Http\Request;
 
@@ -23,56 +22,67 @@ class FeriadoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fecha' => 'required|date',
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string'
+            'fecha' => 'required|date|unique:feriados,fecha',
+            'descripcion' => 'required|string|max:255',
+            'tipo' => 'required|in:feriado,sin_clases',
         ]);
 
         Feriado::create([
             'fecha' => $request->fecha,
-            'nombre' => $request->nombre,
-            'activo' => $request->has('activo') ? 1 : 0
+            'descripcion' => $request->descripcion,
+            'tipo' => $request->tipo,
+            'activo' => true
         ]);
 
         return redirect()
             ->route('calendario.feriados.index')
-            ->with('success','Feriado creado correctamente');
+            ->with('success','Registro creado correctamente');
     }
 
-    public function edit($id)
+    public function edit(Feriado $feriado)
     {
-        $feriado = Feriado::findOrFail($id);
-
         return view('calendario.feriado.edit', compact('feriado'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Feriado $feriado)
     {
         $request->validate([
-            'fecha' => 'required|date',
-            'nombre' => 'required|string|max:255',
-            'activo' => 'required|boolean'
+            'fecha' => 'required|date|unique:feriados,fecha,' . $feriado->id,
+            'descripcion' => 'required|string|max:255',
+            'tipo' => 'required|in:feriado,sin_clases',
         ]);
-
-        $feriado = Feriado::findOrFail($id);
 
         $feriado->update([
             'fecha' => $request->fecha,
-            'nombre' => $request->nombre,
-            'activo' => $request->activo
+            'descripcion' => $request->descripcion,
+            'tipo' => $request->tipo,
         ]);
 
         return redirect()
             ->route('calendario.feriados.index')
-            ->with('success','Feriado actualizado correctamente');
+            ->with('success','Registro actualizado correctamente');
     }
 
     /*
     |---------------------------------------
-    | VER FERIADOS (ALUMNO)
+    | ACTIVAR / DESACTIVAR (TOGGLE)
     |---------------------------------------
     */
-    
+    public function destroy(Feriado $feriado)
+    {
+        $feriado->activo = !$feriado->activo;
+        $feriado->save();
+
+        return redirect()
+            ->route('calendario.feriados.index')
+            ->with('success','Estado actualizado correctamente');
+    }
+
+    /*
+    |---------------------------------------
+    | VER DÍAS (ALUMNO)
+    |---------------------------------------
+    */
     public function verFeriadosAlumno()
     {
         $feriados = Feriado::where('activo',1)
@@ -80,5 +90,23 @@ class FeriadoController extends Controller
             ->get();
 
         return view('usuario_alumno.dias_feriados.feriado', compact('feriados'));
+    }
+
+    /*
+    |---------------------------------------
+    | NOTIFICACIONES (ALUMNO)
+    |---------------------------------------
+    */
+    public function notificacionesAlumno()
+    {
+        $notificaciones = Feriado::where('activo', 1)
+            ->whereBetween('fecha', [
+                now(),
+                now()->addDay()
+            ])
+            ->orderBy('fecha', 'asc')
+            ->get();
+
+        return view('usuario_alumno.notificaciones.notificacion', compact('notificaciones'));
     }
 }

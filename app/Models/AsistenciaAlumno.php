@@ -15,7 +15,8 @@ class AsistenciaAlumno extends Model
         'alumno_id',
         'curso_id',
         'fecha',
-        'estado'
+        'estado',
+        'anio'
     ];
 
     public function justificacion()

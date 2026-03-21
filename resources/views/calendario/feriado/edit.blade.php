@@ -4,12 +4,13 @@
 
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
 
-    <h2 class="text-xl font-bold mb-5">Editar Feriado</h2>
+    <h2 class="text-xl font-bold mb-5">Editar Día</h2>
 
     <form action="{{ route('calendario.feriados.update',$feriado->id) }}" method="POST">
         @csrf
         @method('PUT')
 
+        <!-- FECHA -->
         <div class="mb-4">
             <label class="block font-semibold mb-1">Fecha</label>
             <input type="date" name="fecha"
@@ -18,14 +19,29 @@
                    required>
         </div>
 
+        <!-- DESCRIPCIÓN -->
         <div class="mb-4">
-            <label class="block font-semibold mb-1">Nombre</label>
-            <input type="text" name="nombre"
-                   value="{{ $feriado->nombre }}"
+            <label class="block font-semibold mb-1">Descripción</label>
+            <input type="text" name="descripcion"
+                   value="{{ $feriado->descripcion }}"
                    class="w-full border rounded-lg p-2"
                    required>
         </div>
 
+        <!-- TIPO -->
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Tipo</label>
+            <select name="tipo" class="w-full border rounded-lg p-2">
+                <option value="feriado" {{ $feriado->tipo == 'feriado' ? 'selected' : '' }}>
+                    Feriado
+                </option>
+                <option value="sin_clases" {{ $feriado->tipo == 'sin_clases' ? 'selected' : '' }}>
+                    Día sin clases
+                </option>
+            </select>
+        </div>
+
+        <!-- ACTIVO -->
         <div class="mb-4 flex items-center gap-2">
             <input type="checkbox" name="activo" value="1"
                    {{ $feriado->activo ? 'checked' : '' }}>

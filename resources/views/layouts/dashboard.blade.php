@@ -135,12 +135,17 @@
 
                     <a href="{{ route('calendario.feriados.index') }}"
                        class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">
-                        🎉 Feriados
+                        🎉 Feriados - Sin clases
                     </a>
 
                     <a href="{{ route('calendario.justificaciones.index') }}"
                        class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">
                         📝 Justificaciones
+                    </a>
+
+                    <a href="{{ route('calendario.calificaciones.index') }}"
+                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">
+                        🅰️ Calificaciones
                     </a>
 
                 </div>
@@ -164,9 +169,14 @@
                         📈 Reportes Generales
                     </a>
 
-                    <a href="{{ route('reportes.alumnos.pdf') }}"
+                    <a href="{{ route('reportes.excel') }}"
                        class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">
-                        📄 Listado de Alumnos (PDF)
+                        📈 Exportar Excel
+                    </a>
+
+                    <a href="{{ route('reportes.alumnos.estadistica') }}"
+                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">
+                        📄 Alumnos PDF
                     </a>
 
                 </div>
@@ -225,6 +235,27 @@
     <div class="flex justify-center pb-20">
 
         <div class="grid grid-cols-2 gap-8 max-w-3xl w-full">
+
+            <a href="{{ route('alumno.notificaciones') }}"
+            class="relative bg-white shadow-lg rounded-2xl p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+
+                <!-- 🔴 BADGE -->
+                @if($cantidadNotificaciones > 0)
+                    <span class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {{ $cantidadNotificaciones }}
+                    </span>
+                @endif
+
+                <div class="text-5xl mb-4">🔔</div>
+                <h3 class="text-xl font-bold text-gray-800">Notificaciones</h3>
+
+            </a>
+
+            <a href="{{ route('alumno.notas') }}"
+               class="bg-white shadow-lg rounded-2xl p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-5xl mb-4">📊</div>
+                <h3 class="text-xl font-bold text-gray-800">Mis Notas</h3>
+            </a>
 
             <a href="{{ route('alumno.asistencias.historial') }}"
                class="bg-white shadow-lg rounded-2xl p-8 text-center hover:shadow-2xl hover:scale-105 transition">

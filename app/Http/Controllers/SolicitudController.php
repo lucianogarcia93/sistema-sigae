@@ -45,6 +45,7 @@ class SolicitudController extends Controller
             'nombre' => $solicitud->nombre,
             'apellido' => $solicitud->apellido,
             'dni' => $solicitud->dni,
+            'fecha_nacimiento' => $solicitud->fecha_nacimiento,
             'email' => $solicitud->email,
             'anio' => $solicitud->anio,
             'activo' => true,

@@ -7,13 +7,13 @@
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">📅 Gestión de Feriados</h1>
-            <p class="text-gray-500 text-sm">Administración de feriados del calendario</p>
+            <h1 class="text-3xl font-bold text-gray-800">📅 Gestión de Días</h1>
+            <p class="text-gray-500 text-sm">Feriados y días sin clases</p>
         </div>
 
         <a href="{{ route('calendario.feriados.create') }}"
            class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg">
-            Nuevo Feriado
+            Nuevo Registro
         </a>
     </div>
 
@@ -32,7 +32,8 @@
             <thead class="bg-blue-600 text-white uppercase text-xs">
                 <tr>
                     <th class="px-6 py-3 text-left">Fecha</th>
-                    <th class="px-6 py-3 text-left">Nombre</th>
+                    <th class="px-6 py-3 text-left">Descripción</th>
+                    <th class="px-6 py-3 text-left">Tipo de Día</th>
                     <th class="px-6 py-3 text-left">Estado</th>
                     <th class="px-6 py-3 text-right">Acciones</th>
                 </tr>
@@ -44,16 +45,31 @@
 
                 <tr class="hover:bg-gray-50 transition">
 
+                    <!-- FECHA -->
                     <td class="px-6 py-4 font-medium text-gray-700">
                         {{ \Carbon\Carbon::parse($feriado->fecha)->format('d/m/Y') }}
                     </td>
 
-                    <td class="px-6 py-4 font">
-                        {{ $feriado->nombre }}
+                    <!-- DESCRIPCIÓN -->
+                    <td class="px-6 py-4">
+                        {{ $feriado->descripcion }}
                     </td>
 
+                    <!-- TIPO -->
                     <td class="px-6 py-4">
+                        @if($feriado->tipo == 'feriado')
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                Feriado
+                            </span>
+                        @else
+                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                Sin clases
+                            </span>
+                        @endif
+                    </td>
 
+                    <!-- ESTADO -->
+                    <td class="px-6 py-4">
                         @if($feriado->activo)
                             <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
                                 Activo
@@ -63,9 +79,9 @@
                                 Inactivo
                             </span>
                         @endif
-
                     </td>
 
+                    <!-- ACCIONES -->
                     <td class="px-6 py-4 text-right flex justify-end gap-2">
 
                         <!-- EDITAR -->
@@ -75,16 +91,12 @@
                         </a>
 
                         <!-- TOGGLE ACTIVAR / DESACTIVAR -->
-                        <form action="{{ route('calendario.feriados.update',$feriado->id) }}"
-                              method="POST">
+                        <form action="{{ route('calendario.feriados.destroy',$feriado->id) }}"
+                            method="POST"
+                            onsubmit="return confirm('¿Seguro que deseas cambiar el estado del registro?')">
 
                             @csrf
-                            @method('PUT')
-
-                            <input type="hidden" name="nombre" value="{{ $feriado->nombre }}">
-                            <input type="hidden" name="fecha" value="{{ $feriado->fecha }}">
-                            <input type="hidden" name="descripcion" value="{{ $feriado->descripcion }}">
-                            <input type="hidden" name="activo" value="{{ $feriado->activo ? 0 : 1 }}">
+                            @method('DELETE')
 
                             <button class="px-3 py-1 rounded-lg text-xs text-white shadow
                             {{ $feriado->activo ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }}">
@@ -102,8 +114,8 @@
             @empty
 
                 <tr>
-                    <td colspan="4" class="text-center py-8 text-gray-400">
-                        No hay feriados registrados.
+                    <td colspan="5" class="text-center py-8 text-gray-400">
+                        No hay registros cargados.
                     </td>
                 </tr>
 

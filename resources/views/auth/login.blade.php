@@ -39,7 +39,7 @@
             @csrf
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">Ingresar DNI o Email</label>
+                <label class="block text-sm font-medium text-gray-700">Ingresar Correo Electronico</label>
                 <input 
                     type="email" 
                     name="email" 

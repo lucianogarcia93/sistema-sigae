@@ -12,8 +12,9 @@ class Feriado extends Model
     protected $table = 'feriados';
 
     protected $fillable = [
-        'nombre',
+        'descripcion',
         'fecha',
+        'tipo',
         'activo'
     ];
 }

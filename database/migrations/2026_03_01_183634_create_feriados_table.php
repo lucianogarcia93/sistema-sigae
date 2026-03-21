@@ -11,10 +11,16 @@ class CreateFeriadosTable extends Migration
         Schema::create('feriados', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nombre');
-            $table->date('fecha');
+            // Describe el evento (feriado o motivo de suspensión)
+            $table->string('descripcion');
 
-            // Permite desactivar sin borrar
+            // Fecha del día sin actividad
+            $table->date('fecha')->unique();
+
+            // Tipo: feriado oficial o día sin clases
+            $table->enum('tipo', ['feriado', 'sin_clases'])->default('feriado');
+
+            // Permite activar/desactivar sin borrar
             $table->boolean('activo')->default(true);
 
             $table->timestamps();

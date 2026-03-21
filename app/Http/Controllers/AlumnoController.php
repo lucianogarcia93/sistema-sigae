@@ -7,6 +7,7 @@ use App\Models\Curso;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\AsistenciaAlumno;
+use App\Models\Feriado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -137,6 +138,16 @@ class AlumnoController extends Controller
             'role_id' => $roleAlumno->id
         ]);
 
+        // Buscamos la solicitud correspondiente al mismo curso y DNI
+        $solicitud = Solicitud::where('dni', $alumno->dni)
+                            ->where('curso_id', $alumno->curso_id)
+                            ->first();
+
+        // Si la solicitud tiene fecha de nacimiento, la copiamos al alumno
+        if ($solicitud && $solicitud->fecha_nacimiento) {
+            $alumno->fecha_nacimiento = $solicitud->fecha_nacimiento;
+        }
+
         $alumno->user_id = $user->id;
         $alumno->estado = 'aprobado';
         $alumno->activo = true;
@@ -191,5 +202,18 @@ class AlumnoController extends Controller
         $usuario = Auth::user();
         $alumno = Alumno::with('curso.nivel')->where('user_id', $usuario->id)->first();
         return view('usuario_alumno.informacion.personales', compact('alumno'));
+    }
+
+    public function dashboard()
+    {
+        // 🔔 Notificaciones (hoy + mañana)
+        $notificaciones = Feriado::where('activo', 1)
+            ->whereDate('fecha', '>=', Carbon::today())
+            ->whereDate('fecha', '<=', Carbon::tomorrow())
+            ->get();
+
+        $cantidadNotificaciones = $notificaciones->count();
+
+        return view('dashboard', compact('cantidadNotificaciones'));
     }
 }

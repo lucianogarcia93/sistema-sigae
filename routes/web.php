@@ -14,6 +14,7 @@ use App\Http\Controllers\JustificacionController;
 use App\Http\Controllers\AsistenciaAlumnoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SolicitudController;
+use App\Http\Controllers\CalificacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,18 +42,6 @@ Route::get('alumnos/confirmar/{token}', [AlumnoController::class, 'confirmar'])
 
 /*
 |--------------------------------------------------------------------------
-| INSCRIPCIÓN POR QR (PÚBLICA)
-|--------------------------------------------------------------------------
-*/
-Route::prefix('academica')->name('academica.')->group(function () {
-    Route::get('inscripcion/curso/{curso}', [CursoController::class, 'formInscripcion'])
-        ->name('cursos.inscripcion.form');
-    Route::post('inscripcion/curso/{curso}', [CursoController::class, 'storeInscripcion'])
-        ->name('cursos.inscripcion.store');
-});
-
-/*
-|--------------------------------------------------------------------------
 | RUTAS PROTEGIDAS
 |--------------------------------------------------------------------------
 */
@@ -60,9 +49,8 @@ Route::prefix('academica')->name('academica.')->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     // DASHBOARD
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AlumnoController::class, 'dashboard'])
+    ->name('dashboard');
 
     // CAMBIAR CONTRASEÑA ALUMNO
     Route::get('/alumno/password', function () {
@@ -82,6 +70,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/alumno/justificacion/motivo', [JustificacionController::class, 'create'])->name('alumno.justificacion.motivo');
     Route::post('/alumno/justificacion/guardar', [JustificacionController::class, 'store'])->name('alumno.justificacion.store');
     Route::get('/alumno/justificaciones', [JustificacionController::class, 'index'])->name('alumno.justificacion.index');
+
+    // 🔔 NOTIFICACIONES (NUEVO)
+    Route::get('/alumno/notificaciones', [FeriadoController::class, 'notificacionesAlumno'])
+    ->name('alumno.notificaciones');
+
+    // 📊 MIS NOTAS (NUEVO)
+    Route::get('/alumno/notas', [CalificacionController::class, 'misNotas'])->name('alumno.notas');
+
+    /*
+    |--------------------------------------------------------------------------
+    | INSCRIPCIÓN POR QR
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('academica')->name('academica.')->group(function () {
+        Route::get('inscripcion/curso/{curso}', [CursoController::class, 'formInscripcion'])
+            ->name('cursos.inscripcion.form');
+        Route::post('inscripcion/curso/{curso}', [CursoController::class, 'storeInscripcion'])
+            ->name('cursos.inscripcion.store');
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -125,6 +132,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('feriados', FeriadoController::class)->parameters(['feriados' => 'feriado']);
         Route::get('/justificaciones', [JustificacionController::class, 'indexAdmin'])->name('justificaciones.index');
         Route::put('/justificaciones/{id}', [JustificacionController::class, 'update'])->name('justificaciones.update');
+        
+        Route::resource('calificaciones', CalificacionController::class);
     });
 
     /*
@@ -138,6 +147,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [AsistenciaAlumnoController::class, 'store'])->name('store');
         Route::get('/edit', [AsistenciaAlumnoController::class, 'edit'])->name('edit');
         Route::put('/update', [AsistenciaAlumnoController::class, 'update'])->name('update');
+        
+        Route::get('cargar-planilla', [AsistenciaAlumnoController::class, 'cargarPlanilla'])
+            ->name('cargarPlanilla'); // <- solo "cargarPlanilla", no todo el prefijo
     });
 
     /*
@@ -146,7 +158,20 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::prefix('reportes')->name('reportes.')->group(function () {
-        Route::get('/generales', [ReporteController::class, 'generales'])->name('generales');
-        Route::get('/alumnos-pdf', [ReporteController::class, 'alumnosPdf'])->name('alumnos.pdf');
+        Route::get('/generales', [ReporteController::class, 'generales'])->name('generales'); // vista con gráfico y select de fechas
+
+        // Vista estadística filtrada
+        Route::get('/estadisticas', [ReporteController::class, 'estadistica'])
+            ->name('alumnos.estadistica');
+
+        // Generar PDF de la estadística individual
+        Route::get('/estadisticas/pdf', [ReporteController::class, 'estadisticaPdf'])
+            ->name('alumnos.estadistica.pdf');
+
+        Route::get('/excel', [ReporteController::class, 'index'])->name('excel');
+
+        // Ruta para exportar realmente el Excel
+        Route::get('/export', [ReporteController::class, 'export'])->name('export');
     });
+    
 });

@@ -5,7 +5,7 @@
 <div class="bg-white p-6 rounded-xl shadow">
 
     <h1 class="text-2xl font-bold mb-6 text-gray-800">
-        Feriados Institucionales
+        Notificaciones
     </h1>
 
     <table class="w-full text-sm">
@@ -13,22 +13,26 @@
         <thead class="bg-blue-600 text-white uppercase text-xs">
             <tr>
                 <th class="px-6 py-3 text-left">Fecha</th>
-                <th class="px-6 py-3 text-left">Descripción</th>
+                <th class="px-6 py-3 text-left">Mensaje</th>
             </tr>
         </thead>
 
         <tbody>
 
-            @forelse($feriados as $feriado)
+            @forelse($notificaciones as $n)
 
             <tr class="border-b hover:bg-gray-50">
                 
+                <!-- FECHA -->
                 <td class="px-6 py-3">
-                    {{ \Carbon\Carbon::parse($feriado->fecha)->format('d/m/Y') }}
+                    {{ \Carbon\Carbon::parse($n->fecha)->format('d/m/Y') }}
                 </td>
 
+                <!-- MENSAJE -->
                 <td class="px-6 py-3">
-                    {{ $feriado->descripcion }}
+                    📢 
+                    {{ \Carbon\Carbon::parse($n->fecha)->isTomorrow() ? 'Mañana no hay clases' : 'Hoy no hay clases' }}
+                    ({{ $n->descripcion }})
                 </td>
 
             </tr>
@@ -37,7 +41,7 @@
 
             <tr>
                 <td colspan="2" class="text-center py-6 text-gray-500">
-                    No hay feriados registrados
+                    No hay notificaciones próximas
                 </td>
             </tr>
 

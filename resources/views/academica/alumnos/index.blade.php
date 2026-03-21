@@ -49,6 +49,7 @@
                     <th class="px-6 py-3 text-left">Apellido</th>
                     <th class="px-6 py-3 text-left">DNI</th>
                     <th class="px-6 py-3 text-left">Curso</th>
+                    <th class="px-6 py-3 text-left">Año</th>
                     <th class="px-6 py-3 text-left">Estado</th>
                     <th class="px-6 py-3 text-right">Acciones</th>
                 </tr>
@@ -61,6 +62,7 @@
                     <td class="px-6 py-4">{{ $alumno->apellido }}</td>
                     <td class="px-6 py-4">{{ $alumno->dni }}</td>
                     <td class="px-6 py-4">{{ optional($alumno->curso)->division ?? '-' }}</td>
+                    <td class="px-6 py-4">{{ $alumno->anio }}</td>
                     <td class="px-6 py-4">
                         @if($alumno->estado == 'aprobado')
                             <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">Aprobado</span>
