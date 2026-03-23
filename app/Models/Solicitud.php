@@ -20,6 +20,9 @@ class Solicitud extends Model
         'anio',
         'fecha_nacimiento',
         'estado',
+        'token',           // 🔥 IMPORTANTE
+        'motivo_rechazo',  // 🔥 IMPORTANTE
+        'password_temporal' // 🔥 NUEVO: contraseña que verá el alumno
     ];
 
     // Relación con Curso

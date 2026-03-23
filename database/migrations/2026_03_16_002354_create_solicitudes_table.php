@@ -17,10 +17,20 @@ return new class extends Migration
             $table->string('email', 255);
             $table->integer('anio');
             $table->date('fecha_nacimiento')->nullable();
+
             $table->enum('estado', ['pendiente', 'aprobado', 'rechazado'])->default('pendiente');
+
+            // 🔥 NUEVOS CAMPOS
+            $table->string('token', 100)->unique();
+            $table->string('password_temporal', 100)->nullable(); // Contraseña para mostrar al alumno
+            $table->text('motivo_rechazo')->nullable();
+
             $table->timestamps();
 
-            $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
+            $table->foreign('curso_id')
+                ->references('id')
+                ->on('cursos')
+                ->onDelete('cascade');
         });
     }
 

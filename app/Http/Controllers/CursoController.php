@@ -9,6 +9,7 @@ use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class CursoController extends Controller
 {
@@ -121,8 +122,11 @@ class CursoController extends Controller
             'anio' => 'required|integer',
         ]);
 
-        // Crear solicitud en lugar de alumno
-        Solicitud::create([
+        // 🔥 Generar token único
+        $token = Str::random(40);
+
+        // Crear solicitud
+        $solicitud = Solicitud::create([
             'curso_id' => $curso->id,
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -130,11 +134,14 @@ class CursoController extends Controller
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'email' => $request->email,
             'anio' => $request->anio,
-            'estado' => 'pendiente',  // Pendiente de aprobación
+            'estado' => 'pendiente',
+            'token' => $token, // 🔥 IMPORTANTE
         ]);
 
+        // 🔥 Redirigir con token
         return redirect()->route('academica.cursos.inscripcion.form', $curso)
-            ->with('success', 'Su solicitud de inscripción ha sido enviada y está pendiente de aprobación por el administrador.');
+            ->with('success', 'ok')
+            ->with('token', $token);
     }
 
 }

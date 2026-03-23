@@ -119,6 +119,7 @@ Route::middleware(['auth'])->group(function () {
 
         // RUTAS DE SOLICITUDES (ADMIN)
         Route::get('solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
+        Route::get('/estado-solicitud/{token}', [SolicitudController::class, 'verEstado'])->name('solicitud.estado');
         Route::post('solicitudes/{id}/aprobar', [SolicitudController::class, 'aprobar'])->name('solicitudes.aprobar');
         Route::post('solicitudes/{id}/rechazar', [SolicitudController::class, 'rechazar'])->name('solicitudes.rechazar');
     });

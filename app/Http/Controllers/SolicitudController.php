@@ -34,10 +34,21 @@ class SolicitudController extends Controller
         return view('academica.solicitudes.index', compact('solicitudes'));
     }
 
+    public function verEstado($token)
+    {
+        $solicitud = Solicitud::where('token', $token)->firstOrFail();
+
+        return view('solicitudes.estado', compact('solicitud'));
+    }
+
     // Aprobar solicitud
     public function aprobar($id)
     {
         $solicitud = Solicitud::findOrFail($id);
+
+        if ($solicitud->estado !== 'pendiente') {
+            return back()->with('error', 'La solicitud ya fue procesada.');
+        }
 
         // Crear alumno
         $alumno = Alumno::create([
@@ -52,10 +63,11 @@ class SolicitudController extends Controller
             'estado' => 'aprobado',
         ]);
 
-        // Crear usuario
+        // Generar contraseña aleatoria
         $passwordPlain = Str::random(8);
-        $roleAlumno = Role::where('name', 'alumno')->firstOrFail();
 
+        // Guardar usuario en la tabla users
+        $roleAlumno = Role::where('name', 'alumno')->firstOrFail();
         $user = User::create([
             'name' => $alumno->nombre.' '.$alumno->apellido,
             'email' => $alumno->email,
@@ -67,20 +79,23 @@ class SolicitudController extends Controller
         $alumno->user_id = $user->id;
         $alumno->save();
 
-        // Cambiar estado de la solicitud a 'aprobado' para historial
+        // Guardar contraseña temporal en la solicitud para que el alumno la vea
+        $solicitud->password_temporal = $passwordPlain;
         $solicitud->estado = 'aprobado';
         $solicitud->save();
 
-        return back()->with('success', "Alumno aprobado y usuario creado. Contraseña: $passwordPlain");
+        return back()->with('success', 'Alumno aprobado. El alumno podrá ver su contraseña en el link de estado.');
     }
     
     // Rechazar solicitud
-    public function rechazar($id)
+    public function rechazar(Request $request, $id)
     {
         $solicitud = Solicitud::findOrFail($id);
+
         $solicitud->estado = 'rechazado';
+        $solicitud->motivo_rechazo = $request->motivo_rechazo; // 🔥 NUEVO
         $solicitud->save();
 
-        return back()->with('success', 'Solicitud rechazada. No se creó ningún alumno.');
+        return back()->with('success', 'Solicitud rechazada correctamente.');
     }
 }

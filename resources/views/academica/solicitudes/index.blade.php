@@ -19,6 +19,12 @@
     </div>
     @endif
 
+    @if(session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        {{ session('error') }}
+    </div>
+    @endif
+
     <!-- BUSCADOR -->
     <div class="bg-white p-4 rounded-xl shadow mb-6">
         <form method="GET" action="{{ route('academica.solicitudes.index') }}">
@@ -45,7 +51,7 @@
                 <tr>
                     <th class="px-6 py-3 text-left">Nombre</th>
                     <th class="px-6 py-3 text-left">Apellido</th>
-                    <th class="px-6 py-3 text-left">DNI</th>
+                    <!--<th class="px-6 py-3 text-left">DNI</th>-->
                     <th class="px-6 py-3 text-left">Email</th>
                     <th class="px-6 py-3 text-left">Curso</th>
                     <th class="px-6 py-3 text-left">Estado</th>
@@ -59,7 +65,7 @@
 
                     <td class="px-6 py-4">{{ $s->nombre }}</td>
                     <td class="px-6 py-4">{{ $s->apellido }}</td>
-                    <td class="px-6 py-4">{{ $s->dni }}</td>
+                    <!--<td class="px-6 py-4">{{ $s->dni }}</td>-->
                     <td class="px-6 py-4">{{ $s->email }}</td>
                     <td class="px-6 py-4">{{ optional($s->curso)->division ?? '-' }} - {{ optional($s->curso->nivel)->nombre ?? '-' }}</td>
 
@@ -76,9 +82,10 @@
 
                     <!-- ACCIONES -->
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end gap-2">
+                        <div class="flex justify-end gap-2 items-center">
 
                             @if($s->estado == 'pendiente')
+                            <!-- Aprobar -->
                             <form action="{{ route('academica.solicitudes.aprobar', $s->id) }}" method="POST">
                                 @csrf
                                 <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-xs">
@@ -86,11 +93,17 @@
                                 </button>
                             </form>
 
-                            <form action="{{ route('academica.solicitudes.rechazar', $s->id) }}" method="POST">
+                            <!-- Rechazar con motivo -->
+                            <form action="{{ route('academica.solicitudes.rechazar', $s->id) }}" method="POST" class="flex items-center gap-1">
                                 @csrf
                                 <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs">
                                     Rechazar
                                 </button>
+
+                                <input type="text" name="motivo_rechazo"
+                                    placeholder="Motivo (opcional)"
+                                    class="border px-2 py-1 rounded text-xs"
+                                >
                             </form>
                             @endif
 

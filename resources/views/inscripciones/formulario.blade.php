@@ -16,9 +16,17 @@
     </div>
 
     <!-- Mensajes de sesión -->
-    @if(session('success'))
-        <div class="flex items-center bg-green-100 border border-green-400 text-green-700 px-3 py-1.5 rounded mb-3 text-sm">
-            <span class="mr-2">✅</span> {{ session('success') }}
+    @if(session('success') && session('token'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <p>✅ Tu solicitud de inscripción fue enviada correctamente.</p>
+            <p class="mt-2">
+                Para consultar el estado de tu solicitud, <strong>guardá este enlace</strong>:
+            </p>
+
+            <a href="{{ route('academica.solicitud.estado', session('token')) }}"
+            class="inline-block mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
+                Consultar estado de solicitud
+            </a>
         </div>
     @endif
 
