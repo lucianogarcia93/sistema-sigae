@@ -38,6 +38,7 @@ class ReporteController extends Controller
                 if ($anio) {
                     $q->where('anio', $anio);
                 }
+                $q->where('activo', true);
             });
         }
 
@@ -61,7 +62,8 @@ class ReporteController extends Controller
 
             // 🔹 Fechas reales
             $fechasOriginales = AsistenciaAlumno::whereHas('alumno', function ($q) use ($cursoId, $anio) {
-                    $q->where('curso_id', $cursoId);
+                    $q->where('curso_id', $cursoId)
+                    ->where('activo', true);
 
                     if ($anio) {
                         $q->where('anio', $anio);
@@ -80,6 +82,7 @@ class ReporteController extends Controller
 
             // 🔹 Alumnos
             $alumnos = Alumno::where('curso_id', $cursoId)
+                            ->where('activo', true)
                             ->when($anio, function ($q) use ($anio) {
                                 $q->where('anio', $anio);
                             })

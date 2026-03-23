@@ -100,10 +100,8 @@ class FeriadoController extends Controller
     public function notificacionesAlumno()
     {
         $notificaciones = Feriado::where('activo', 1)
-            ->whereBetween('fecha', [
-                now(),
-                now()->addDay()
-            ])
+            ->whereDate('fecha', '>=', now()->toDateString())
+            ->whereDate('fecha', '<=', now()->addDay()->toDateString())
             ->orderBy('fecha', 'asc')
             ->get();
 

@@ -109,10 +109,10 @@
                                 (
                                 @switch($nota->tipo)
                                     @case('pri_cuatrimestre')
-                                        Primer Cuatrimestre
+                                        1 Cuatrimestre
                                         @break
                                     @case('seg_cuatrimestre')
-                                        Segundo Cuatrimestre
+                                        2 Cuatrimestre
                                         @break
                                     @case('nota_final')
                                         Nota Final

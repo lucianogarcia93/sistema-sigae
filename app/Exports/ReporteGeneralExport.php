@@ -21,7 +21,6 @@ class ReporteGeneralExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        // Traemos la relación curso.nivel para usarlo en el Excel
         $query = Alumno::with('curso.nivel');
 
         if ($this->curso_id) {
@@ -38,7 +37,6 @@ class ReporteGeneralExport implements FromCollection, WithHeadings
             });
         }
 
-        // Mapear los datos para que aparezca Nivel y Curso en lugar de curso_id
         return $query->get()->map(function($alumno) {
             return [
                 'ID' => $alumno->id,
@@ -47,7 +45,7 @@ class ReporteGeneralExport implements FromCollection, WithHeadings
                 'DNI' => $alumno->dni,
                 'Nivel' => $alumno->curso->nivel->nombre ?? '-',
                 'Curso' => $alumno->curso->division ?? '-',
-                'Estado' => $alumno->estado,
+                'Estado' => $alumno->activo ? 'Activo' : 'Inactivo', // 🔥 CAMBIO
             ];
         });
     }
@@ -61,7 +59,7 @@ class ReporteGeneralExport implements FromCollection, WithHeadings
             'DNI',
             'Nivel',
             'Curso',
-            'Estado',
+            'Estado Alumno',
         ];
     }
 }

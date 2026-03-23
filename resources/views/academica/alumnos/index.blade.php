@@ -50,7 +50,7 @@
                     <th class="px-6 py-3 text-left">DNI</th>
                     <th class="px-6 py-3 text-left">Curso</th>
                     <th class="px-6 py-3 text-left">Año</th>
-                    <th class="px-6 py-3 text-left">Estado</th>
+                    <th class="px-6 py-3 text-left">Estado del Alumno</th>
                     <th class="px-6 py-3 text-right">Acciones</th>
                 </tr>
             </thead>
@@ -63,13 +63,16 @@
                     <td class="px-6 py-4">{{ $alumno->dni }}</td>
                     <td class="px-6 py-4">{{ optional($alumno->curso)->division ?? '-' }}</td>
                     <td class="px-6 py-4">{{ $alumno->anio }}</td>
+
+                    <!-- ESTADO ACTIVO / INACTIVO -->
                     <td class="px-6 py-4">
-                        @if($alumno->estado == 'aprobado')
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">Aprobado</span>
-                        @elseif($alumno->estado == 'rechazado')
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">Rechazado</span>
+                        @if($alumno->activo)
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">Activo</span>
+                        @else
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">Inactivo</span>
                         @endif
                     </td>
+
                     <td class="px-6 py-4 text-right">
                         <div class="flex justify-end gap-2">
                             <a href="{{ route('academica.alumnos.edit', $alumno) }}"
@@ -91,7 +94,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center py-8 text-gray-400">
+                    <td colspan="8" class="text-center py-8 text-gray-400">
                         No hay alumnos registrados.
                     </td>
                 </tr>
