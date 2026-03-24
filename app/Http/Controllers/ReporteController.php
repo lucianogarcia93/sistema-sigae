@@ -27,47 +27,36 @@ class ReporteController extends Controller
         $cursoId = $request->curso_id;
         $anio = $request->anio;
 
-        // 🔹 Query base (cards)
-        $query = AsistenciaAlumno::with('alumno');
-
-        if ($cursoId || $anio) {
-            $query->whereHas('alumno', function ($q) use ($cursoId, $anio) {
-                if ($cursoId) {
-                    $q->where('curso_id', $cursoId);
-                }
-                if ($anio) {
-                    $q->where('anio', $anio);
-                }
-                $q->where('activo', true);
-            });
-        }
-
-        // 🔹 Cards
-        $presentes = (clone $query)->where('estado', 'presente')->count();
-        $ausentes = (clone $query)->where('estado', 'ausente')->count();
-        $total = $presentes + $ausentes;
-
-        $porcentaje = $total > 0
-            ? round(($presentes / $total) * 100)
-            : 0;
-
-        // ------------------------------------------------------------------
-        // 🔥 GRÁFICO DE ONDAS
-        // ------------------------------------------------------------------
-
-        $fechasGrafico = [];
+        // 🔹 Inicializamos cards
+        $total = $presentes = $ausentes = $porcentaje = 0;
         $datasetsGrafico = [];
+        $fechasGrafico = [];
 
-        if ($cursoId) {
+        if ($cursoId && $anio) { // 🔹 Solo calculamos si ambos filtros existen
+
+            // 🔹 Query base
+            $query = AsistenciaAlumno::with('alumno')
+                        ->whereHas('alumno', function ($q) use ($cursoId, $anio) {
+                            $q->where('curso_id', $cursoId)
+                            ->where('anio', $anio)
+                            ->where('activo', true);
+                        });
+
+            // 🔹 Cards
+            $presentes = (clone $query)->where('estado', 'presente')->count();
+            $ausentes = (clone $query)->where('estado', 'ausente')->count();
+            $total = $presentes + $ausentes;
+            $porcentaje = $total > 0 ? round(($presentes / $total) * 100) : 0;
+
+            // ------------------------------------------------------------------
+            // 🔥 GRÁFICO DE ONDAS
+            // ------------------------------------------------------------------
 
             // 🔹 Fechas reales
             $fechasOriginales = AsistenciaAlumno::whereHas('alumno', function ($q) use ($cursoId, $anio) {
                     $q->where('curso_id', $cursoId)
+                    ->where('anio', $anio)
                     ->where('activo', true);
-
-                    if ($anio) {
-                        $q->where('anio', $anio);
-                    }
                 })
                 ->orderBy('fecha', 'asc')
                 ->pluck('fecha')
@@ -77,15 +66,13 @@ class ReporteController extends Controller
             // 🔥 Labels EXPANDIDAS (para suavizar onda)
             $fechasGrafico = $fechasOriginales->flatMap(function ($f) {
                 $label = \Carbon\Carbon::parse($f)->format('d/m');
-                return [$label, '', '', '']; // 4 puntos por fecha
+                return [$label, '', '', ''];
             });
 
             // 🔹 Alumnos
             $alumnos = Alumno::where('curso_id', $cursoId)
+                            ->where('anio', $anio)
                             ->where('activo', true)
-                            ->when($anio, function ($q) use ($anio) {
-                                $q->where('anio', $anio);
-                            })
                             ->take(5)
                             ->get();
 
@@ -94,7 +81,6 @@ class ReporteController extends Controller
                 $data = [];
 
                 foreach ($fechasOriginales as $fecha) {
-
                     $asistencia = AsistenciaAlumno::where('alumno_id', $alumno->id)
                                     ->whereDate('fecha', $fecha)
                                     ->first();
@@ -103,7 +89,6 @@ class ReporteController extends Controller
                         ? rand(6,10)
                         : -rand(3,7);
 
-                    // 🔥 GENERAR ONDA SUAVE
                     $data[] = $valor;
                     $data[] = $valor * 0.6;
                     $data[] = 0;
@@ -121,8 +106,8 @@ class ReporteController extends Controller
 
         // 🔹 Cursos
         $cursos = Curso::with('nivel')
-        ->where('activo', 1) //solo cursos activos
-        ->get();
+            ->where('activo', 1)
+            ->get();
 
         return view('reportes.generales', compact(
             'fechas',

@@ -24,6 +24,20 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
+                <!-- AÑO -->
+                <div>
+                    <label class="text-sm text-gray-600">Año Escolar</label>
+                    <select name="anio"
+                        onchange="this.form.submit()"
+                        class="border rounded-lg px-4 py-2 w-full">
+
+                        <option value="">Seleccionar año</option>
+                        <option value="2026" {{ request('anio') == 2026 ? 'selected' : '' }}>2026</option>
+                        <option value="2027" {{ request('anio') == 2027 ? 'selected' : '' }}>2027</option>
+
+                    </select>
+                </div>
+
                 <!-- CURSO -->
                 <div>
                     <label class="text-sm text-gray-600">Nivel - Curso</label>
@@ -39,20 +53,6 @@
                                 {{ $curso->nivel->nombre ?? '' }} - {{ $curso->division }}
                             </option>
                         @endforeach
-
-                    </select>
-                </div>
-
-                <!-- AÑO -->
-                <div>
-                    <label class="text-sm text-gray-600">Año</label>
-                    <select name="anio"
-                        onchange="this.form.submit()"
-                        class="border rounded-lg px-4 py-2 w-full">
-
-                        <option value="">Seleccionar año</option>
-                        <option value="2026" {{ request('anio') == 2026 ? 'selected' : '' }}>2026</option>
-                        <option value="2027" {{ request('anio') == 2027 ? 'selected' : '' }}>2027</option>
 
                     </select>
                 </div>

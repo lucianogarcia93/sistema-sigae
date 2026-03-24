@@ -51,7 +51,7 @@
 
             <!-- AÑO -->
             <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Año</label>
+                <label class="block text-sm font-medium text-gray-600 mb-2">Año Escolar</label>
                 <select name="anio" required
                         class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccionar Año</option>

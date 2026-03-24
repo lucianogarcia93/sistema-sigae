@@ -70,11 +70,12 @@ class AsistenciaAlumnoController extends Controller
                     ->exists();
 
         if($existe){
-            // Redirigir a solo lectura
-            return redirect()->route('asistencia.asistencia_alumno.edit', $request->only('curso_id','anio','fecha'));
+            // ❌ Si ya existe planilla, no dejamos cargar otra
+            return redirect()->route('asistencia.asistencia_alumno.index')
+                ->with('error','Ya existe una planilla de asistencia para este curso en esa fecha y año.');
         }
 
-        // Si no existe, ir a create para cargar planilla nueva
+        // ✅ Si no existe, ir a create para cargar planilla nueva
         return redirect()->route('asistencia.asistencia_alumno.create', $request->only('curso_id','anio','fecha'));
     }
 

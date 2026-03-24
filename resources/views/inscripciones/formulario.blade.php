@@ -19,14 +19,23 @@
     @if(session('success') && session('token'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
             <p>✅ Tu solicitud de inscripción fue enviada correctamente.</p>
+            
             <p class="mt-2">
-                Para consultar el estado de tu solicitud, <strong>guardá este enlace</strong>:
+                Para seguir las actualizaciones de tu inscripción, <strong>guardá este enlace</strong>:
             </p>
 
-            <a href="{{ route('academica.solicitud.estado', session('token')) }}"
-            class="inline-block mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
-                Consultar estado de solicitud
-            </a>
+            <!-- Link clickeable y visible para copiar -->
+            <p class="mt-1 text-sm text-gray-700 break-all">
+                <a href="{{ route('academica.solicitud.estado', session('token')) }}" 
+                class="underline text-blue-600 hover:text-blue-800">
+                {{ route('academica.solicitud.estado', session('token')) }}
+                </a>
+            </p>
+
+            <!-- Explicación adicional -->
+            <p class="mt-2 text-sm text-gray-500">
+                Este enlace es único y privado. Guardalo en un lugar seguro para consultar el estado de tu solicitud cuando quieras.
+            </p>
         </div>
     @endif
 
