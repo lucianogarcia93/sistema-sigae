@@ -15,7 +15,7 @@
         </h1>
 
         <p class="w-full text-white text-sm mt-4 tracking-[0.11em] uppercase">
-            Sistema Integral de Gestión de Asistencia Escolar
+            Sistema Integral de Gestión Académica Escolar
         </p>
 
     </div>
