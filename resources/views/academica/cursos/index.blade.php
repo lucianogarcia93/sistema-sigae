@@ -56,7 +56,7 @@
             <tr>
                 <th class="px-6 py-3 text-left">ID</th>
                 <th class="px-6 py-3 text-left">Nivel</th>
-                <th class="px-6 py-3 text-left">División</th>
+                <th class="px-6 py-3 text-left">Curso</th>
                 <th class="px-6 py-3 text-left">Turno</th>
                 <th class="px-6 py-3 text-left">Materias</th>
                 <th class="px-6 py-3 text-left">Estado</th>

@@ -39,12 +39,12 @@
 
                 <!-- Curso -->
                 <div>
-                    <label class="text-sm text-gray-600">Nivel - Curso</label>
+                    <label class="text-sm text-gray-600">Nivel - Curso - Turno</label>
                     <select name="curso_id" required class="w-full border rounded-lg px-4 py-2">
                         <option value="">Seleccionar curso</option>
                         @foreach($cursos as $curso)
                             <option value="{{ $curso->id }}" {{ request('curso_id') == $curso->id ? 'selected' : '' }}>
-                                {{ $curso->nivel->nombre ?? 'Sin nivel' }} - {{ $curso->division }}
+                                {{ $curso->nivel->nombre ?? 'Sin nivel' }} - {{ $curso->division }} - {{ $curso->turno }}
                             </option>
                         @endforeach
                     </select>

@@ -27,10 +27,10 @@
         <form action="{{ route('academica.cursos.store') }}" method="POST">
             @csrf
 
-            <!-- DIVISIÓN -->
+            <!-- CURSO -->
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">
-                    División
+                    Curso
                 </label>
                 <input type="text"
                        name="division"

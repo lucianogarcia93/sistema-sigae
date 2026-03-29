@@ -30,6 +30,7 @@ class CursoController extends Controller
 
         return view('academica.cursos.index', compact('cursos'));
     }
+
     public function create()
     {
         $niveles = Nivel::where('activo', true)->get();
@@ -39,6 +40,11 @@ class CursoController extends Controller
 
     public function store(Request $request)
     {
+        // 🔹 Normalizar antes de validar (detalle fino)
+        $request->merge([
+            'division' => strtoupper($request->division),
+        ]);
+
         $request->validate([
             'nivel_id' => 'required|exists:niveles,id',
             'division' => [
@@ -46,15 +52,16 @@ class CursoController extends Controller
                 'string',
                 'max:10',
                 Rule::unique('cursos')->where(function ($query) use ($request) {
-                    return $query->where('nivel_id', $request->nivel_id);
+                    return $query->where('nivel_id', $request->nivel_id)
+                                ->where('turno', $request->turno);
                 }),
             ],
-            'turno' => 'nullable|string|max:50',
+            'turno' => 'required|string|max:50',
         ]);
 
         Curso::create([
             'nivel_id' => $request->nivel_id,
-            'division' => strtoupper($request->division),
+            'division' => $request->division, // ya viene en mayúscula
             'turno' => $request->turno,
             'activo' => true,
         ]);
@@ -72,15 +79,30 @@ class CursoController extends Controller
 
     public function update(Request $request, Curso $curso)
     {
+        // 🔹 Normalizar antes de validar
+        $request->merge([
+            'division' => strtoupper($request->division),
+        ]);
+
         $request->validate([
             'nivel_id' => 'required|exists:niveles,id',
-            'division' => 'required|string|max:10',
-            'turno' => 'nullable|string|max:50',
+            'division' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('cursos')
+                    ->ignore($curso->id)
+                    ->where(function ($query) use ($request) {
+                        return $query->where('nivel_id', $request->nivel_id)
+                                    ->where('turno', $request->turno);
+                    }),
+            ],
+            'turno' => 'required|string|max:50',
         ]);
 
         $curso->update([
             'nivel_id' => $request->nivel_id,
-            'division' => strtoupper($request->division),
+            'division' => $request->division,
             'turno' => $request->turno,
         ]);
 

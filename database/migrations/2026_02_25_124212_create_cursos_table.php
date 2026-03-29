@@ -16,13 +16,13 @@ return new class extends Migration
                   ->restrictOnDelete();
 
             $table->string('division'); // A, B, C...
-            $table->string('turno')->nullable(); // mañana, tarde
+            $table->string('turno'); // mañana, tarde, noche
 
             $table->boolean('activo')->default(true);
 
             $table->timestamps();
 
-            $table->unique(['nivel_id', 'division']);
+            $table->unique(['nivel_id', 'division', 'turno']);
         });
     }
 

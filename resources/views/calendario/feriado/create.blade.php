@@ -6,6 +6,17 @@
 
     <h2 class="text-xl font-bold mb-5">Nuevo Día</h2>
 
+    @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <strong>Ups! Hay errores:</strong>
+        <ul class="mt-2 list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <form action="{{ route('calendario.feriados.store') }}" method="POST">
         @csrf
 

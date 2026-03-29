@@ -26,7 +26,7 @@
 
             <!-- DIVISIÓN -->
             <div class="mb-4">
-                <label class="block text-gray-700 font-semibold mb-2">División</label>
+                <label class="block text-gray-700 font-semibold mb-2">Curso</label>
                 <input type="text"
                        name="division"
                        value="{{ old('division', $curso->division) }}"
