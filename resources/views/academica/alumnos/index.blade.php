@@ -7,7 +7,7 @@
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">🎒 Gestión de Alumnos</h1>
+            <h1 class="text-3xl font-bold text-gray-800">👨‍🎓 Gestión de Alumnos</h1>
             <p class="text-gray-500 text-sm">Administración de estudiantes del sistema</p>
         </div>
     </div>

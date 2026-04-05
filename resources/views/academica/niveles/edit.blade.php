@@ -4,7 +4,15 @@
 
 <div class="max-w-3xl mx-auto px-6 py-8">
 
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">Editar Nivel</h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">
+            🎓 Editar Nivel
+        </h1>
+
+        <p class="text-gray-500 text-sm">
+            Modificar datos del nivel académico
+        </p>
+    </div>
 
     <div class="bg-white shadow rounded-2xl p-6">
 

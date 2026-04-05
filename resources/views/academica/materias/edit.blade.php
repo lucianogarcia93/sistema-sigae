@@ -5,7 +5,7 @@
 <div class="max-w-4xl mx-auto">
 
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Editar Materia</h1>
+        <h1 class="text-3xl font-bold text-gray-800">📚 Editar Materia</h1>
         <p class="text-gray-500 text-sm">Modificar datos de la materia</p>
     </div>
 
@@ -67,7 +67,8 @@
                    Cancelar
                 </a>
 
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+                <button type="submit"
+                        class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg">
                     Actualizar
                 </button>
 

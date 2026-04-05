@@ -5,7 +5,8 @@
 <div class="max-w-3xl mx-auto">
 
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">✏️ Editar Curso</h1>
+        <h1 class="text-3xl font-bold text-gray-800">📚 Editar Curso</h1>
+        <p class="text-gray-500 text-sm">Modificar datos del curso</p>
     </div>
 
     @if ($errors->any())

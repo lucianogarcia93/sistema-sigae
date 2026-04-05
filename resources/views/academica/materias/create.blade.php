@@ -5,7 +5,7 @@
 <div class="max-w-4xl mx-auto">
 
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Nueva Materia</h1>
+        <h1 class="text-3xl font-bold text-gray-800">📚 Crear Materia</h1>
         <p class="text-gray-500 text-sm">Agregar una nueva materia al sistema</p>
     </div>
 

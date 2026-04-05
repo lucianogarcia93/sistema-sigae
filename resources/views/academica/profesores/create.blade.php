@@ -4,7 +4,10 @@
 
 <div class="max-w-3xl mx-auto">
 
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Crear Profesor</h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">👨‍🏫 Crear Curso</h1>
+        <p class="text-gray-500 text-sm">Registrar nuevo curso académico</p>
+    </div>
 
     @if ($errors->any())
         <div class="bg-red-100 text-red-700 p-4 mb-6 rounded">

@@ -6,8 +6,11 @@
 
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800">
-            ✏️ Editar Alumno
+            👨‍🎓 Editar Alumno
         </h1>
+        <p class="text-gray-500 text-sm">
+            Modificar datos del alumno
+        </p>
     </div>
 
     <!-- ERRORES -->
