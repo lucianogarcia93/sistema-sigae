@@ -103,7 +103,7 @@
                 <tr class="hover:bg-gray-50 transition">
 
                     <td class="px-6 py-4 font-semibold text-gray-800">
-                        {{ $planilla->curso->nivel->nombre ?? 'Sin nivel' }} - {{ $planilla->curso->division ?? '-' }}
+                        {{ $planilla->curso->nivel->nombre ?? 'Sin nivel' }} - {{ $planilla->curso->division ?? '-' }} - {{ $planilla->curso->turno ?? '-' }}
                     </td>
 
                     <td class="px-6 py-4 text-gray-600">

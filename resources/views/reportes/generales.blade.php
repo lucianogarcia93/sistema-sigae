@@ -40,7 +40,7 @@
 
                 <!-- CURSO -->
                 <div>
-                    <label class="text-sm text-gray-600">Nivel - Curso</label>
+                    <label class="text-sm text-gray-600">Nivel - Curso - Turno</label>
                     <select name="curso_id"
                         onchange="this.form.submit()"
                         class="border rounded-lg px-4 py-2 w-full">
@@ -50,7 +50,7 @@
                         @foreach($cursos as $curso)
                             <option value="{{ $curso->id }}"
                                 {{ request('curso_id') == $curso->id ? 'selected' : '' }}>
-                                {{ $curso->nivel->nombre ?? '' }} - {{ $curso->division }}
+                                {{ $curso->nivel->nombre ?? '' }} - {{ $curso->division }} - {{ $curso->turno }}
                             </option>
                         @endforeach
 
