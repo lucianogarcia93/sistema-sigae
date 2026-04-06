@@ -7,7 +7,7 @@
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">📅 Gestión de Días</h1>
+            <h1 class="text-3xl font-bold text-gray-800">📅 Gestión de Días No Laborales</h1>
             <p class="text-gray-500 text-sm">Feriados y días sin clases</p>
         </div>
 

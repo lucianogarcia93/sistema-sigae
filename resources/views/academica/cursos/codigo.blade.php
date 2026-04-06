@@ -22,4 +22,11 @@
 
 </div>
 
+<div class="flex justify-end mt-10">
+    <a href="{{ route('academica.cursos.index') }}" 
+       class="bg-gray-600 text-white px-4 py-2 rounded shadow hover:bg-gray-700">
+        Volver atrás
+    </a>
+</div>
+
 @endsection

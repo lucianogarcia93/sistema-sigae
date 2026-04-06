@@ -9,7 +9,7 @@
     <div>
         <h1 class="text-3xl font-bold text-gray-800">📚 Materias del Curso</h1>
         <p class="text-gray-500 text-sm">
-            Asignar materias al curso <strong>{{ $curso->division }}</strong>
+            Asignar materias al curso <strong>{{ $curso->nivel->nombre ?? '' }} - {{ $curso->division }} - {{ $curso->turno }}</strong>
         </p>
     </div>
 </div>

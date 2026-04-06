@@ -174,5 +174,11 @@ Route::middleware(['auth'])->group(function () {
         // Ruta para exportar realmente el Excel
         Route::get('/export', [ReporteController::class, 'export'])->name('export');
     });
+
+    Route::get('/migrate', function () {
+        \Artisan::call('migrate:fresh', ['--force' => true]);
+        \Artisan::call('db:seed', ['--force' => true]);
+        return 'OK migrado';
+    });
     
 });
