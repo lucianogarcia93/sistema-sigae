@@ -22,6 +22,12 @@ use App\Http\Controllers\CalificacionController;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/migrate', function () {
+    \Artisan::call('migrate:fresh', ['--force' => true]);
+    \Artisan::call('db:seed', ['--force' => true]);
+    return 'OK migrado';
+});
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -175,10 +181,4 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export', [ReporteController::class, 'export'])->name('export');
     });
 
-    Route::get('/migrate', function () {
-        \Artisan::call('migrate:fresh', ['--force' => true]);
-        \Artisan::call('db:seed', ['--force' => true]);
-        return 'OK migrado';
-    });
-    
 });
