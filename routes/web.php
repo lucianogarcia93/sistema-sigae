@@ -55,6 +55,15 @@ Route::prefix('academica')->name('academica.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| 🔥 VER ESTADO SOLICITUD (PÚBLICO)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/estado-solicitud/{token}', [SolicitudController::class, 'verEstado'])
+    ->name('solicitud.estado');
+
+/*
+|--------------------------------------------------------------------------
 | RUTAS PROTEGIDAS
 |--------------------------------------------------------------------------
 */
@@ -120,7 +129,6 @@ Route::middleware(['auth'])->group(function () {
 
         // RUTAS DE SOLICITUDES (ADMIN)
         Route::get('solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
-        Route::get('/estado-solicitud/{token}', [SolicitudController::class, 'verEstado'])->name('solicitud.estado');
         Route::post('solicitudes/{id}/aprobar', [SolicitudController::class, 'aprobar'])->name('solicitudes.aprobar');
         Route::post('solicitudes/{id}/rechazar', [SolicitudController::class, 'rechazar'])->name('solicitudes.rechazar');
     });
@@ -151,7 +159,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update', [AsistenciaAlumnoController::class, 'update'])->name('update');
         
         Route::get('cargar-planilla', [AsistenciaAlumnoController::class, 'cargarPlanilla'])
-            ->name('cargarPlanilla'); // <- solo "cargarPlanilla", no todo el prefijo
+            ->name('cargarPlanilla');
     });
 
     /*
@@ -160,19 +168,16 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::prefix('reportes')->name('reportes.')->group(function () {
-        Route::get('/generales', [ReporteController::class, 'generales'])->name('generales'); // vista con gráfico y select de fechas
+        Route::get('/generales', [ReporteController::class, 'generales'])->name('generales');
 
-        // Vista estadística filtrada
         Route::get('/estadisticas', [ReporteController::class, 'estadistica'])
             ->name('alumnos.estadistica');
 
-        // Generar PDF de la estadística individual
         Route::get('/estadisticas/pdf', [ReporteController::class, 'estadisticaPdf'])
             ->name('alumnos.estadistica.pdf');
 
         Route::get('/excel', [ReporteController::class, 'index'])->name('excel');
 
-        // Ruta para exportar realmente el Excel
         Route::get('/export', [ReporteController::class, 'export'])->name('export');
     });
 
