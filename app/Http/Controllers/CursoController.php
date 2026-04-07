@@ -142,6 +142,7 @@ class CursoController extends Controller
             'dni' => 'required|string|max:20|unique:solicitudes,dni',
             'email' => 'required|email|max:255|unique:solicitudes,email',
             'anio' => 'required|integer',
+            'fecha_nacimiento' => 'nullable|date_format:Y-m-d|before:today',
         ]);
 
         // 🔥 Generar token único

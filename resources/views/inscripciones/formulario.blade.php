@@ -79,34 +79,12 @@
 
         <div>
             <label class="block font-semibold text-gray-700 mb-0.5 text-sm">Fecha de Nacimiento</label>
-            <div class="flex gap-2">
-                <!-- Día -->
-                <select name="dia_nacimiento" required
-                    class="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-blue-300 focus:outline-none text-sm">
-                    <option value="">Día</option>
-                    @for ($d = 1; $d <= 31; $d++)
-                        <option value="{{ $d }}" {{ old('dia_nacimiento') == $d ? 'selected' : '' }}>{{ $d }}</option>
-                    @endfor
-                </select>
-
-                <!-- Mes -->
-                <select name="mes_nacimiento" required
-                    class="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-blue-300 focus:outline-none text-sm">
-                    <option value="">Mes</option>
-                    @for ($m = 1; $m <= 12; $m++)
-                        <option value="{{ $m }}" {{ old('mes_nacimiento') == $m ? 'selected' : '' }}>{{ $m }}</option>
-                    @endfor
-                </select>
-
-                <!-- Año -->
-                <select name="anio_nacimiento" required
-                    class="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-blue-300 focus:outline-none text-sm">
-                    <option value="">Año</option>
-                    @for ($y = date('Y'); $y >= 1900; $y--)
-                        <option value="{{ $y }}" {{ old('anio_nacimiento') == $y ? 'selected' : '' }}>{{ $y }}</option>
-                    @endfor
-                </select>
-            </div>
+            <input type="text" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}"
+                placeholder="AAAA-MM-DD" 
+                pattern="\d{4}-\d{2}-\d{2}" 
+                title="Ingrese la fecha en formato AAAA-MM-DD"
+                class="w-full border border-gray-300 rounded-lg px-4 py-1.5 focus:ring-2 focus:ring-blue-300 focus:outline-none transition text-sm"
+                required>
         </div>
 
         <div>
