@@ -141,8 +141,10 @@
     </aside>
 
     <!-- MAIN -->
-    <main class="flex-1 p-4 md:p-10 overflow-auto">
-        @yield('content')
+    <main class="flex-1 p-4 md:p-10 overflow-auto min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            @yield('content')
+        </div>
     </main>
 
 </div>
