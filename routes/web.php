@@ -22,12 +22,6 @@ use App\Http\Controllers\CalificacionController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/migrate', function () {
-    \Artisan::call('migrate:fresh', ['--force' => true]);
-    \Artisan::call('db:seed', ['--force' => true]);
-    return 'OK migrado';
-});
-
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -48,6 +42,19 @@ Route::get('alumnos/confirmar/{token}', [AlumnoController::class, 'confirmar'])
 
 /*
 |--------------------------------------------------------------------------
+| INSCRIPCIÓN PÚBLICA (SIN LOGIN)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('academica')->name('academica.')->group(function () {
+    Route::get('inscripcion/curso/{curso}', [CursoController::class, 'formInscripcion'])
+        ->name('cursos.inscripcion.form');
+    Route::post('inscripcion/curso/{curso}', [CursoController::class, 'storeInscripcion'])
+        ->name('cursos.inscripcion.store');
+});
+
+/*
+|--------------------------------------------------------------------------
 | RUTAS PROTEGIDAS
 |--------------------------------------------------------------------------
 */
@@ -56,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
     // DASHBOARD
     Route::get('/dashboard', [AlumnoController::class, 'dashboard'])
-    ->name('dashboard');
+        ->name('dashboard');
 
     // CAMBIAR CONTRASEÑA ALUMNO
     Route::get('/alumno/password', function () {
@@ -79,22 +86,10 @@ Route::middleware(['auth'])->group(function () {
 
     // 🔔 NOTIFICACIONES (NUEVO)
     Route::get('/alumno/notificaciones', [FeriadoController::class, 'notificacionesAlumno'])
-    ->name('alumno.notificaciones');
+        ->name('alumno.notificaciones');
 
     // 📊 MIS NOTAS (NUEVO)
     Route::get('/alumno/notas', [CalificacionController::class, 'misNotas'])->name('alumno.notas');
-
-    /*
-    |--------------------------------------------------------------------------
-    | INSCRIPCIÓN POR QR
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('academica')->name('academica.')->group(function () {
-        Route::get('inscripcion/curso/{curso}', [CursoController::class, 'formInscripcion'])
-            ->name('cursos.inscripcion.form');
-        Route::post('inscripcion/curso/{curso}', [CursoController::class, 'storeInscripcion'])
-            ->name('cursos.inscripcion.store');
-    });
 
     /*
     |--------------------------------------------------------------------------
