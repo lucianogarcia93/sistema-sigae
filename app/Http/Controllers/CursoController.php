@@ -136,6 +136,18 @@ class CursoController extends Controller
 
     public function storeInscripcion(Request $request, Curso $curso)
     {
+        // 🔥 CONVERTIR fecha antes de validar (SI viene con formato DD/MM/YYYY)
+        if ($request->filled('fecha_nacimiento')) {
+            try {
+                $fecha = \Carbon\Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento);
+                $request->merge([
+                    'fecha_nacimiento' => $fecha->format('Y-m-d')
+                ]);
+            } catch (\Exception $e) {
+                // no hacer nada, que falle la validación
+            }
+        }
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
@@ -158,10 +170,9 @@ class CursoController extends Controller
             'email' => $request->email,
             'anio' => $request->anio,
             'estado' => 'pendiente',
-            'token' => $token, // 🔥 IMPORTANTE
+            'token' => $token,
         ]);
 
-        // 🔥 Redirigir con token
         return redirect()->route('academica.cursos.inscripcion.form', $curso)
             ->with('success', 'ok')
             ->with('token', $token);

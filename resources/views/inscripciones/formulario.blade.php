@@ -78,15 +78,14 @@
         </div>
 
         <div>
-            <label class="block font-semibold text-gray-700 mb-0.5 text-sm">Fecha de Nacimiento</label>
+            <label class="block font-semibold text-gray-700 mb-0.5 text-sm">
+                Fecha de Nacimiento (DD/MM/AAAA)
+            </label>
             <input type="text" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}"
-                placeholder="AAAA-MM-DD" 
-                pattern="\d{4}-\d{2}-\d{2}" 
-                title="Ingrese la fecha en formato AAAA-MM-DD"
-                class="w-full border border-gray-300 rounded-lg px-4 py-1.5 focus:ring-2 focus:ring-blue-300 focus:outline-none transition text-sm"
-                required>
+                placeholder="Ej: 25/12/2000"
+                class="w-full border border-gray-300 rounded-lg px-4 py-1.5 focus:ring-2 focus:ring-blue-300 focus:outline-none transition text-sm">
         </div>
-
+        
         <div>
             <label class="block font-semibold text-gray-700 mb-0.5 text-sm">Email</label>
             <input type="email" name="email" value="{{ old('email') }}" required
