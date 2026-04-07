@@ -24,11 +24,11 @@
                 Para seguir las actualizaciones de tu inscripción, <strong>guardá este enlace</strong>:
             </p>
 
-            <!-- Link clickeable y visible para copiar -->
+            <!-- 🔥 CORREGIDO -->
             <p class="mt-1 text-sm text-gray-700 break-all">
-                <a href="{{ route('academica.solicitud.estado', session('token')) }}" 
+                <a href="{{ route('solicitud.estado', session('token')) }}" 
                 class="underline text-blue-600 hover:text-blue-800">
-                {{ route('academica.solicitud.estado', session('token')) }}
+                {{ route('solicitud.estado', session('token')) }}
                 </a>
             </p>
 
