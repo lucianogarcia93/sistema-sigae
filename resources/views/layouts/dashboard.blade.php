@@ -35,7 +35,7 @@
         class="fixed md:static top-0 left-0 h-full md:h-auto
                 w-64 bg-blue-700 text-white p-4 md:p-6 space-y-6
                 transition-all duration-300 overflow-hidden
-                -translate-x-full md:translate-x-0 z-50">
+                translate-x-0">
 
         <!-- HEADER -->
         <div class="flex items-center gap-3">
@@ -262,7 +262,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-    const sidebar = document.getElementById("sidebar"); // 👈 esto faltaba arriba
+    const sidebar = document.getElementById("sidebar"); // 👈 FALTABA ESTO
     const toggleBtn = document.getElementById("toggleSidebar");
     const openBtn = document.getElementById("openSidebarMobile");
 
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function(){
     toggleBtn.addEventListener("click", function(){
 
         if(window.innerWidth < 768){
-            // 📱 MOBILE → mostrar/ocultar con slide
+            // 📱 MOBILE → ocultar/mostrar
             sidebar.classList.toggle("-translate-x-full");
         } else {
             // 💻 DESKTOP → colapsar ancho
