@@ -12,10 +12,10 @@
 
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 px-4">
 
-<div class="w-full sm:max-w-lg mx-auto px-2 sm:px-4">
+<div class="w-full sm:max-w-xl md:max-w-2xl mx-auto px-2 sm:px-4">
 
     <!-- HEADER -->
-    <div class="text-center mb-6 sm:mb-8"><br>
+    <div class="text-center mt-6 sm:mt-8 mb-6 sm:mb-8">
         <h1 class="text-4xl sm:text-4xl font-bold text-gray-800 mb-2">
             Formulario de Inscripción
         </h1>
