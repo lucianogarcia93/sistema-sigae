@@ -18,7 +18,7 @@
             </h1>
             <!-- Siempre debajo de SIGAE -->
             <div class="max-w-[90%] sm:max-w-full mx-auto">
-                <p class="text-white text-xs sm:text-sm mt-1 sm:mt-2 tracking-[0.11em] uppercase">
+                <p class="text-white text-[0.85rem] sm:text-sm mt-1 sm:mt-2 tracking-[0.11em] leading-snug text-center uppercase">
                     Sistema Integral de Gestión Académica Escolar
                 </p>   
             </div>
