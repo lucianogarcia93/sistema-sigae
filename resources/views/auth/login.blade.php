@@ -12,10 +12,10 @@
 
         <!-- TITULO -->
         <div class="text-center mb-4 sm:mb-6">
-            <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-[0.35em]">
+            <h1 class="text-5xl sm:text-6xl font-extrabold text-white tracking-tight sm:tracking-[0.35em] text-center">
                 SIGAE
             </h1>
-            <p class="text-white text-xs sm:text-sm mt-1 sm:mt-2 tracking-[0.11em] uppercase">
+            <p class="text-white text-sm sm:text-base mt-1 sm:mt-2 text-center tracking-tight sm:tracking-[0.11em] uppercase">
                 Sistema Integral de Gestión Académica Escolar
             </p>
         </div>
