@@ -15,13 +15,13 @@
 <div class="w-full sm:max-w-lg mx-auto px-2 sm:px-4">
 
     <!-- HEADER -->
-    <div class="text-center mb-6 sm:mb-8">
+    <div class="text-center mb-6 sm:mb-8"><br>
         <h1 class="text-4xl sm:text-4xl font-bold text-gray-800 mb-2">
-            🎓 Inscripción
+            Formulario de Inscripción
         </h1>
 
         <p class="text-gray-600 text-sm sm:text-base">
-            {{ $curso->nivel->nombre }} - Curso {{ $curso->division }}
+            {{ $curso->nivel->nombre }} - Curso {{ $curso->division }} - {{ $curso->turno }}
         </p>
     </div>
 
