@@ -32,9 +32,8 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar"
-        class="w-full md:w-64
-                bg-blue-700 text-white p-4 md:p-6 space-y-6
-                transition-all duration-300 overflow-hidden">
+           class="w-full md:w-64 bg-blue-700 text-white p-4 md:p-6 space-y-6 flex-shrink-0
+           transition-all duration-300 overflow-hidden">
 
         <!-- HEADER -->
         <div class="flex items-center gap-3">
@@ -141,14 +140,8 @@
 
     </aside>
 
-    <!-- BOTÓN MOBILE (queda pero ya no molesta) -->
-    <button id="openSidebarMobile"
-            class="md:hidden fixed top-4 left-4 z-50 bg-blue-700 text-white p-2 rounded-lg shadow">
-        ☰
-    </button>
-
     <!-- MAIN -->
-    <main class="flex-1 w-full md:ml-0 p-4 md:p-10 overflow-auto">
+    <main class="flex-1 p-4 md:p-10 overflow-auto">
         @yield('content')
     </main>
 
@@ -186,7 +179,61 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-3xl w-full">
 
-            <!-- (todo igual, no se toca nada) -->
+            <a href="{{ route('alumno.notificaciones') }}"
+               class="relative bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+
+                @if($cantidadNotificaciones > 0)
+                    <span class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {{ $cantidadNotificaciones }}
+                    </span>
+                @endif
+
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">🔔</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Notificaciones</h3>
+
+            </a>
+
+            <a href="{{ route('alumno.notas') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📊</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Notas</h3>
+            </a>
+
+            <a href="{{ route('alumno.asistencias.historial') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📊</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Asistencias</h3>
+            </a>
+
+            <a href="{{ route('alumno.feriados') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📅</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Feriados del Calendario</h3>
+            </a>
+
+            <a href="{{ route('alumno.resumen') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📈</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Resumen General</h3>
+            </a>
+
+            <a href="{{ route('alumno.datos') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">👤</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Datos</h3>
+            </a>
+
+            <a href="{{ route('alumno.password') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">🔒</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Cambiar Contraseña</h3>
+            </a>
+
+            <a href="{{ route('alumno.justificacion.motivo') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📝</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Justificaciones</h3>
+            </a>
 
         </div>
 
@@ -205,41 +252,29 @@
 @endif
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function(){
 
     const sidebar = document.getElementById("sidebar");
     const toggleBtn = document.getElementById("toggleSidebar");
-    const openMobileBtn = document.getElementById("openSidebarMobile");
 
-    // --- Colapsar sidebar en PC ---
-    if(toggleBtn && window.innerWidth >= 768){
-        toggleBtn.addEventListener("click", function(){
-            const isCollapsed = sidebar.classList.contains("w-16");
-            if(isCollapsed){
-                sidebar.classList.remove("w-16", "sidebar-mini");
-                sidebar.classList.add("w-64");
-            } else {
-                sidebar.classList.remove("w-64");
-                sidebar.classList.add("w-16", "sidebar-mini");
-            }
-            localStorage.setItem("sidebarCollapsed", !isCollapsed);
-        });
+    if(!sidebar || !toggleBtn) return;
 
-        const collapsed = localStorage.getItem("sidebarCollapsed") === "true";
-        if(collapsed){
-            sidebar.classList.remove("w-64");
-            sidebar.classList.add("w-16", "sidebar-mini");
-        }
-    }
+    toggleBtn.addEventListener("click", function(){
 
-    // --- Toggle sidebar en móvil ---
-    if(openMobileBtn){
-        openMobileBtn.addEventListener("click", function(){
-            sidebar.classList.toggle("hidden");
-        });
-    }
+        sidebar.classList.toggle("w-16");
+        sidebar.classList.toggle("w-64");
+        sidebar.classList.toggle("sidebar-mini");
+
+        localStorage.setItem(
+            "sidebarCollapsed",
+            sidebar.classList.contains("w-16")
+        );
+
+    });
 
 });
+
 </script>
 
 </body>
