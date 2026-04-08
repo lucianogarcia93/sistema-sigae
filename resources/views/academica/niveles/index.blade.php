@@ -2,17 +2,17 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">🎓 Gestión de Niveles</h1>
             <p class="text-gray-500 text-sm">Administración de niveles académicos</p>
         </div>
 
         <a href="{{ route('academica.niveles.create') }}"
-           class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg">
+           class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg w-full sm:w-auto text-center">
             Nuevo Nivel
         </a>
     </div>
@@ -22,7 +22,7 @@
 
         <form method="GET" action="{{ route('academica.niveles.index') }}">
 
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:flex-row gap-3">
 
                 <input type="text"
                        name="search"
@@ -31,7 +31,7 @@
                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none">
 
                 <button type="submit"
-                        class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg transition">
+                        class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg transition w-full sm:w-auto">
                     Buscar
                 </button>
 
@@ -48,7 +48,7 @@
     @endif
 
     <!-- TABLA -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
 
         <table class="min-w-full text-sm">
 
@@ -89,29 +89,31 @@
 
                     </td>
 
-                    <td class="px-6 py-4 text-right flex justify-end gap-2">
+                    <td class="px-6 py-4 text-right">
 
-                        <a href="{{ route('academica.niveles.edit', $nivel) }}"
-                           class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow">
-                            Editar
-                        </a>
+                        <div class="flex flex-col sm:flex-row justify-end gap-2">
 
-                        <form action="{{ route('academica.niveles.destroy', $nivel) }}"
-                              method="POST"
-                              onsubmit="return confirm('¿Seguro que deseas cambiar el estado del nivel?')">
+                            <a href="{{ route('academica.niveles.edit', $nivel) }}"
+                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow text-center">
+                                Editar
+                            </a>
 
-                            @csrf
-                            @method('DELETE')
+                            <form action="{{ route('academica.niveles.destroy', $nivel) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('¿Seguro que deseas cambiar el estado del nivel?')">
 
-                            <button type="submit"
-                                    class="px-3 py-1 rounded-lg text-xs shadow text-white transition
-                                    {{ $nivel->activo ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }}">
+                                @csrf
+                                @method('DELETE')
 
-                                {{ $nivel->activo ? 'Desactivar' : 'Activar' }}
+                                <button type="submit"
+                                        class="px-3 py-1 rounded-lg text-xs shadow text-white transition
+                                        {{ $nivel->activo ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }}">
+                                    {{ $nivel->activo ? 'Desactivar' : 'Activar' }}
+                                </button>
 
-                            </button>
+                            </form>
 
-                        </form>
+                        </div>
 
                     </td>
 
