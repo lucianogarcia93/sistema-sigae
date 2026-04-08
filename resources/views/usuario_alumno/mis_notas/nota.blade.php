@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="bg-white p-6 rounded-xl shadow">
+<div class="bg-white p-6 rounded-xl shadow max-w-4xl mx-auto overflow-x-auto">
 
     <h1 class="text-2xl font-bold mb-6 text-gray-800">
         Mis Calificaciones
@@ -15,7 +15,6 @@
                 <th class="px-6 py-3 text-left">Materia</th>
                 <th class="px-6 py-3 text-left">Tipo</th>
                 <th class="px-6 py-3 text-left">Nota</th>
-                <!--<th class="px-6 py-3 text-left">Fecha</th>-->
             </tr>
         </thead>
 
@@ -41,17 +40,12 @@
                     {{ $nota->nota }}
                 </td>
 
-                <!-- FECHA
-                <td class="px-6 py-3">
-                    {{ \Carbon\Carbon::parse($nota->fecha)->format('d/m/Y') }}
-                </td>-->
-
             </tr>
 
             @empty
 
             <tr>
-                <td colspan="4" class="text-center py-6 text-gray-500">
+                <td colspan="3" class="text-center py-6 text-gray-500">
                     No tenés calificaciones cargadas
                 </td>
             </tr>
@@ -65,7 +59,7 @@
     <!-- BOTON VOLVER -->
     <div class="mt-6 flex justify-end">
         <a href="{{ route('dashboard') }}"
-        class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-lg text-sm">
+           class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-lg text-sm">
             Volver al panel
         </a>
     </div>
