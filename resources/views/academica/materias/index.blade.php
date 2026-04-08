@@ -2,17 +2,17 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">📚 Gestión de Materias</h1>
             <p class="text-gray-500 text-sm">Administración de materias del sistema</p>
         </div>
 
         <a href="{{ route('academica.materias.create') }}"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full sm:w-auto text-center">
             Nueva Materia
         </a>
     </div>
@@ -27,10 +27,10 @@
     <!-- BUSCADOR -->
     <div class="bg-white p-4 rounded-xl shadow mb-6">
         <form method="GET" action="{{ route('academica.materias.index') }}">
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:flex-row gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="🔎 Buscar materia..."
                        class="w-full border rounded-lg px-4 py-2">
-                <button type="submit" class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg">
+                <button type="submit" class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg w-full sm:w-auto">
                     Buscar
                 </button>
             </div>
@@ -38,7 +38,7 @@
     </div>
 
     <!-- TABLA -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
         <table class="min-w-full text-sm">
 
             <thead class="bg-blue-600 text-white uppercase text-xs">
@@ -65,9 +65,9 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end gap-2">
+                        <div class="flex flex-col sm:flex-row justify-end gap-2">
                             <a href="{{ route('academica.materias.edit', $materia) }}"
-                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs">
+                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs text-center">
                                Editar
                             </a>
                             <form action="{{ route('academica.materias.destroy', $materia) }}" method="POST"

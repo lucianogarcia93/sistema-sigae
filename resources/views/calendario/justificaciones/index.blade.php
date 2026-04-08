@@ -2,10 +2,10 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">
                 📄 Gestión de Justificaciones
@@ -24,7 +24,7 @@
     @endif
 
     <!-- TABLA -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
 
         <table class="min-w-full text-sm">
 
@@ -90,7 +90,7 @@
 
                         @if($justificacion->estado == 'pendiente')
 
-                        <div class="flex justify-end gap-3">
+                        <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
 
                             <!-- APROBAR -->
                             <form method="POST"
@@ -101,7 +101,7 @@
                                 <input type="hidden" name="estado" value="aprobado">
 
                                 <button
-                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-lg text-xs shadow">
+                                    class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-lg text-xs shadow">
                                         Aprobar
                                 </button>
 
@@ -116,7 +116,7 @@
                                 <input type="hidden" name="estado" value="rechazado">
 
                                 <button
-                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-lg text-xs shadow">
+                                    class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-lg text-xs shadow">
                                         Rechazar
                                 </button>
 

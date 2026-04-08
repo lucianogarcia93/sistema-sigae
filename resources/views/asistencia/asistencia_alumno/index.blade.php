@@ -14,10 +14,10 @@
 </div>
 @endif
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">📅 Asistencia de Alumnos</h1>
             <p class="text-gray-500 text-sm">Registro diario por curso</p>
@@ -35,7 +35,7 @@
 
         <form action="{{ route('asistencia.asistencia_alumno.cargarPlanilla') }}" method="GET">
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
                 <!-- Curso -->
                 <div>
@@ -83,9 +83,9 @@
     </div>
 
     <!-- PLANILLAS CARGADAS -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
 
-        <table class="w-full text-sm">
+        <table class="min-w-full text-sm">
 
             <thead class="bg-blue-600 text-white uppercase text-xs">
                 <tr>

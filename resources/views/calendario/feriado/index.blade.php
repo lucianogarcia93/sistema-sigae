@@ -2,17 +2,17 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">📅 Gestión de Días No Laborales</h1>
             <p class="text-gray-500 text-sm">Feriados y días sin clases</p>
         </div>
 
         <a href="{{ route('calendario.feriados.create') }}"
-           class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg">
+           class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg w-full sm:w-auto text-center">
             Nuevo Registro
         </a>
     </div>
@@ -25,7 +25,7 @@
     @endif
 
     <!-- TABLA -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
 
         <table class="min-w-full text-sm">
 
@@ -82,31 +82,33 @@
                     </td>
 
                     <!-- ACCIONES -->
-                    <td class="px-6 py-4 text-right flex justify-end gap-2">
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex flex-col sm:flex-row justify-end gap-2">
 
-                        <!-- EDITAR -->
-                        <a href="{{ route('calendario.feriados.edit',$feriado->id) }}"
-                           class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow">
-                            Editar
-                        </a>
+                            <!-- EDITAR -->
+                            <a href="{{ route('calendario.feriados.edit',$feriado->id) }}"
+                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow text-center">
+                                Editar
+                            </a>
 
-                        <!-- TOGGLE ACTIVAR / DESACTIVAR -->
-                        <form action="{{ route('calendario.feriados.destroy',$feriado->id) }}"
-                            method="POST"
-                            onsubmit="return confirm('¿Seguro que deseas cambiar el estado del registro?')">
+                            <!-- TOGGLE -->
+                            <form action="{{ route('calendario.feriados.destroy',$feriado->id) }}"
+                                method="POST"
+                                onsubmit="return confirm('¿Seguro que deseas cambiar el estado del registro?')">
 
-                            @csrf
-                            @method('DELETE')
+                                @csrf
+                                @method('DELETE')
 
-                            <button class="px-3 py-1 rounded-lg text-xs text-white shadow
-                            {{ $feriado->activo ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }}">
+                                <button class="w-full sm:w-auto px-3 py-1 rounded-lg text-xs text-white shadow
+                                {{ $feriado->activo ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }}">
 
-                                {{ $feriado->activo ? 'Desactivar' : 'Activar' }}
+                                    {{ $feriado->activo ? 'Desactivar' : 'Activar' }}
 
-                            </button>
+                                </button>
 
-                        </form>
+                            </form>
 
+                        </div>
                     </td>
 
                 </tr>

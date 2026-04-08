@@ -2,17 +2,17 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
 <!-- HEADER -->
-<div class="flex justify-between items-center mb-8">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
     <div>
         <h1 class="text-3xl font-bold text-gray-800">📚 Gestión de Cursos</h1>
         <p class="text-gray-500 text-sm">Administración de cursos académicos</p>
     </div>
 
     <a href="{{ route('academica.cursos.create') }}"
-       class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg">
+       class="bg-gradient-to-r from-blue-600 to-blue-800 hover:scale-105 transition transform text-white px-5 py-2 rounded-xl shadow-lg w-full sm:w-auto text-center">
         Nuevo Curso
     </a>
 </div>
@@ -22,7 +22,7 @@
 
     <form method="GET" action="{{ route('academica.cursos.index') }}">
 
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
 
             <input type="text"
                    name="search"
@@ -31,7 +31,7 @@
                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none">
 
             <button type="submit"
-                    class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg transition">
+                    class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg transition w-full sm:w-auto">
                 Buscar
             </button>
 
@@ -48,7 +48,7 @@
 @endif
 
 <!-- TABLA -->
-<div class="bg-white rounded-xl shadow overflow-hidden">
+<div class="bg-white rounded-xl shadow overflow-x-auto">
 
     <table class="min-w-full text-sm">
 
@@ -100,63 +100,62 @@
 
     </td>
 
-                <td class="px-6 py-4">
+    <td class="px-6 py-4">
 
-                    @if($curso->activo)
-                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                            Activo
-                        </span>
-                    @else
-                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                            Inactivo
-                        </span>
-                    @endif
+        @if($curso->activo)
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                Activo
+            </span>
+        @else
+            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                Inactivo
+            </span>
+        @endif
 
-                </td>
+    </td>
 
-                <td class="px-6 py-4 text-right flex justify-end gap-2">
+    <td class="px-6 py-4 text-right">
+        <div class="flex flex-col sm:flex-row justify-end gap-2">
 
-                    <a href="{{ route('academica.cursos.edit', $curso) }}"
-                       class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow">
-                        Editar
-                    </a>
+            <a href="{{ route('academica.cursos.edit', $curso) }}"
+               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-xs shadow text-center">
+                Editar
+            </a>
 
-                    <a href="{{ route('academica.cursos.qr', $curso) }}"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs shadow">
-                            QR
-                    </a>
+            <a href="{{ route('academica.cursos.qr', $curso) }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs shadow text-center">
+                    QR
+            </a>
 
-                    <!-- BOTÓN NUEVO MATERIAS -->
-                    <a href="{{ route('academica.cursos.materias', $curso) }}"
-                       class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-xs shadow">
-                        Agregar Materias
-                    </a>
+            <a href="{{ route('academica.cursos.materias', $curso) }}"
+               class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-xs shadow text-center">
+                Agregar Materias
+            </a>
 
-                    <form action="{{ route('academica.cursos.destroy', $curso) }}"
-                          method="POST"
-                          onsubmit="return confirm('¿Seguro que deseas cambiar el estado del curso?')">
+            <form action="{{ route('academica.cursos.destroy', $curso) }}"
+                  method="POST"
+                  onsubmit="return confirm('¿Seguro que deseas cambiar el estado del curso?')">
 
-                        @csrf
-                        @method('DELETE')
+                @csrf
+                @method('DELETE')
 
-                        <button type="submit"
-                                class="px-3 py-1 rounded-lg text-xs shadow text-white transition
-                                {{ $curso->activo ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }}">
+                <button type="submit"
+                        class="px-3 py-1 rounded-lg text-xs shadow text-white transition
+                        {{ $curso->activo ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }}">
+                    {{ $curso->activo ? 'Desactivar' : 'Activar' }}
+                </button>
 
-                            {{ $curso->activo ? 'Desactivar' : 'Activar' }}
+            </form>
 
-                        </button>
+        </div>
+    </td>
 
-                    </form>
-
-                </td>
-
-            </tr>
+</tr>
 
             @empty
 
             <tr>
-                <td colspan="6" class="text-center py-8 text-gray-400">
+                <td colspan="7" class="text-center py-8 text-gray-400">
                     No hay cursos registrados.
                 </td>
             </tr>

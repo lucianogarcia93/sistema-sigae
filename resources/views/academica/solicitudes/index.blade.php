@@ -2,10 +2,10 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">📬 Solicitudes de Inscripción</h1>
             <p class="text-gray-500 text-sm">Gestión de solicitudes pendientes de aprobación</p>
@@ -28,7 +28,7 @@
     <!-- BUSCADOR -->
     <div class="bg-white p-4 rounded-xl shadow mb-6">
         <form method="GET" action="{{ route('academica.solicitudes.index') }}">
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:flex-row gap-3">
                 <input type="text"
                        name="search"
                        value="{{ request('search') }}"
@@ -36,7 +36,7 @@
                        class="w-full border rounded-lg px-4 py-2">
 
                 <button type="submit"
-                        class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg">
+                        class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg w-full sm:w-auto">
                     Buscar
                 </button>
             </div>
@@ -44,7 +44,7 @@
     </div>
 
     <!-- TABLA -->
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
 
         <table class="min-w-full text-sm">
             <thead class="bg-blue-600 text-white uppercase text-xs">
@@ -82,29 +82,31 @@
 
                     <!-- ACCIONES -->
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end gap-2 items-center">
+                        <div class="flex flex-col sm:flex-row justify-end gap-2 items-end sm:items-center">
 
                             @if($s->estado == 'pendiente')
+
                             <!-- Aprobar -->
                             <form action="{{ route('academica.solicitudes.aprobar', $s->id) }}" method="POST">
                                 @csrf
-                                <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-xs">
+                                <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-xs w-full sm:w-auto">
                                     Aprobar
                                 </button>
                             </form>
 
                             <!-- Rechazar con motivo -->
-                            <form action="{{ route('academica.solicitudes.rechazar', $s->id) }}" method="POST" class="flex items-center gap-1">
+                            <form action="{{ route('academica.solicitudes.rechazar', $s->id) }}" method="POST" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 w-full sm:w-auto">
                                 @csrf
-                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs">
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs w-full sm:w-auto">
                                     Rechazar
                                 </button>
 
                                 <input type="text" name="motivo_rechazo"
                                     placeholder="Motivo (opcional)"
-                                    class="border px-2 py-1 rounded text-xs"
+                                    class="border px-2 py-1 rounded text-xs w-full sm:w-auto"
                                 >
                             </form>
+
                             @endif
 
                         </div>
