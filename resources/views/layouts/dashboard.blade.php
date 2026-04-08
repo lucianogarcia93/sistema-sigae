@@ -208,7 +208,7 @@
             <a href="{{ route('alumno.feriados') }}"
                class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
                 <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📅</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Feriados del Calendario</h3>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Feriados</h3>
             </a>
 
             <a href="{{ route('alumno.resumen') }}"
