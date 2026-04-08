@@ -120,6 +120,7 @@ class ReporteController extends Controller
             'datasetsGrafico'
         ));
     }
+    
     /*
     |-----------------------------------------------------------------------
     | VISTA PARA SELECCIONAR CURSO + TURNO Y DESCARGAR EXCEL
@@ -138,27 +139,29 @@ class ReporteController extends Controller
     */
     public function export(Request $request)
     {
+        // Validamos los datos que vienen del formulario
         $request->validate([
             'curso_id' => 'required|exists:cursos,id',
-            'turno'    => 'required|string',
             'anio'     => 'required|integer',
         ]);
 
-        // Filtrar alumnos por curso, año y turno (turno desde cursos)
+        // Obtenemos el curso seleccionado
+        $curso = Curso::findOrFail($request->curso_id);
+
+        // Filtramos alumnos por curso y año (usando la columna correcta: 'anio')
         $alumnos = Alumno::where('curso_id', $request->curso_id)
                         ->where('anio', $request->anio)
-                        ->whereHas('curso', function($q) use ($request) {
-                            $q->where('turno', $request->turno);
-                        })
                         ->get();
 
+        // Si no hay alumnos, volvemos a la vista con mensaje de error
         if ($alumnos->isEmpty()) {
-            return back()->with('error', 'No se encontraron alumnos para el año, curso y turno seleccionado.');
+            return redirect()->route('reportes.excel')
+                            ->with('error', '⚠️ No se encontraron alumnos para el curso y año seleccionado.');
         }
 
-        // Pasamos la colección de alumnos filtrados al export
+        // Si hay alumnos, generamos y descargamos el Excel
         return Excel::download(
-            new ReporteGeneralExport($request->curso_id, $request->turno, $request->anio),
+            new ReporteGeneralExport($curso->id, $curso->turno, $request->anio),
             'reporte_general.xlsx'
         );
     }

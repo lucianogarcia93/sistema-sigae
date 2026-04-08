@@ -61,7 +61,7 @@
                     <td class="px-6 py-4">{{ $alumno->nombre }}</td>
                     <td class="px-6 py-4">{{ $alumno->apellido }}</td>
                     <td class="px-6 py-4">{{ $alumno->dni }}</td>
-                    <td class="px-6 py-4">{{ optional($alumno->curso)->division ?? '-' }}</td>
+                    <td class="px-6 py-4">{{ optional($alumno->curso)->division ?? '-' }}-{{ optional($alumno->curso)->turno ?? '-' }}</td>
                     <td class="px-6 py-4">{{ $alumno->anio }}</td>
 
                     <!-- ESTADO ACTIVO / INACTIVO -->
