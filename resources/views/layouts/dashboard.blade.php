@@ -142,8 +142,14 @@
 
     </aside>
 
+    <!-- BOTÓN MOBILE -->
+    <button id="openSidebarMobile"
+            class="md:hidden fixed top-4 left-4 z-50 bg-blue-700 text-white p-2 rounded-lg shadow">
+        ☰
+    </button>
+
     <!-- MAIN -->
-    <main class="flex-1 p-4 md:p-10 overflow-auto">
+    <main class="flex-1 w-full md:ml-0 p-4 md:p-10 overflow-auto">
         @yield('content')
     </main>
 
@@ -256,8 +262,15 @@
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-    const sidebar = document.getElementById("sidebar");
+    const sidebar = document.getElementById("sidebar"); // 👈 esto faltaba arriba
     const toggleBtn = document.getElementById("toggleSidebar");
+    const openBtn = document.getElementById("openSidebarMobile");
+
+    if(openBtn){
+        openBtn.addEventListener("click", function(){
+            sidebar.classList.remove("-translate-x-full");
+        });
+    }
 
     if(!sidebar || !toggleBtn) return;
 

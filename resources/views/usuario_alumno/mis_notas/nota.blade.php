@@ -15,7 +15,7 @@
                 <th class="px-6 py-3 text-left">Materia</th>
                 <th class="px-6 py-3 text-left">Tipo</th>
                 <th class="px-6 py-3 text-left">Nota</th>
-                <th class="px-6 py-3 text-left">Fecha</th>
+                <!--<th class="px-6 py-3 text-left">Fecha</th>-->
             </tr>
         </thead>
 
@@ -41,10 +41,10 @@
                     {{ $nota->nota }}
                 </td>
 
-                <!-- FECHA -->
+                <!-- FECHA
                 <td class="px-6 py-3">
                     {{ \Carbon\Carbon::parse($nota->fecha)->format('d/m/Y') }}
-                </td>
+                </td>-->
 
             </tr>
 
