@@ -31,7 +31,7 @@
 
                     @foreach($cursos as $curso)
                         <option value="{{ $curso->id }}">
-                            {{ $curso->nivel->nombre ?? '-' }} - {{ $curso->division }} {{ $curso->turno }}
+                            {{ $curso->nivel->nombre ?? '-' }} - {{ $curso->division }} - {{ $curso->turno }}
                         </option>
                     @endforeach
                 </select>
