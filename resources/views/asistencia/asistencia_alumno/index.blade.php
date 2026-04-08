@@ -118,7 +118,7 @@
 
                         <a href="{{ route('asistencia.asistencia_alumno.edit') }}?curso_id={{ $planilla->curso_id }}&fecha={{ $planilla->fecha }}"
                         class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-xs shadow">
-                            Ver Planilla
+                            Planilla
                         </a>
 
                     </td>

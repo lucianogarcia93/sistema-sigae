@@ -6,13 +6,13 @@
 
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-black-800">
-            📝 Justificación - Motivo
+            📝 Justificación
         </h2>
 
         <!-- BOTON VER JUSTIFICACIONES -->
         <a href="{{ route('alumno.justificacion.index') }}"
            class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl shadow transition text-sm">
-            Ver Mis Justificaciones
+            Estados
         </a>
     </div>
 

@@ -32,8 +32,10 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar"
-           class="w-full md:w-64 bg-blue-700 text-white p-4 md:p-6 space-y-6 flex-shrink-0
-           transition-all duration-300 overflow-hidden">
+        class="fixed md:static top-0 left-0 h-full md:h-auto
+                w-64 bg-blue-700 text-white p-4 md:p-6 space-y-6
+                transition-all duration-300 overflow-hidden
+                -translate-x-full md:translate-x-0 z-50">
 
         <!-- HEADER -->
         <div class="flex items-center gap-3">
@@ -252,7 +254,6 @@
 @endif
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function(){
 
     const sidebar = document.getElementById("sidebar");
@@ -262,19 +263,37 @@ document.addEventListener("DOMContentLoaded", function(){
 
     toggleBtn.addEventListener("click", function(){
 
-        sidebar.classList.toggle("w-16");
-        sidebar.classList.toggle("w-64");
-        sidebar.classList.toggle("sidebar-mini");
+        if(window.innerWidth < 768){
+            // 📱 MOBILE → mostrar/ocultar con slide
+            sidebar.classList.toggle("-translate-x-full");
+        } else {
+            // 💻 DESKTOP → colapsar ancho
+            const isCollapsed = sidebar.classList.contains("w-16");
 
-        localStorage.setItem(
-            "sidebarCollapsed",
-            sidebar.classList.contains("w-16")
-        );
+            if(isCollapsed){
+                sidebar.classList.remove("w-16", "sidebar-mini");
+                sidebar.classList.add("w-64");
+            } else {
+                sidebar.classList.remove("w-64");
+                sidebar.classList.add("w-16", "sidebar-mini");
+            }
+
+            localStorage.setItem("sidebarCollapsed", !isCollapsed);
+        }
 
     });
 
-});
+    // 💾 Mantener estado SOLO en desktop
+    if(window.innerWidth >= 768){
+        const collapsed = localStorage.getItem("sidebarCollapsed") === "true";
 
+        if(collapsed){
+            sidebar.classList.remove("w-64");
+            sidebar.classList.add("w-16", "sidebar-mini");
+        }
+    }
+
+});
 </script>
 
 </body>

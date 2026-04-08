@@ -62,7 +62,7 @@
 
                 <button type="submit"
                         class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
-                    Modificar Contraseña
+                    Modificar
                 </button>
 
             </div>
