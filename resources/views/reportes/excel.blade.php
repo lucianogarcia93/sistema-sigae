@@ -25,31 +25,19 @@
 
             <!-- CURSO -->
             <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Nivel - Curso</label>
+                <label class="block text-sm font-medium text-gray-600 mb-2">Nivel - Curso - Turno</label>
                 <select name="curso_id" required class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccionar Curso</option>
 
                     @foreach($cursos as $curso)
                         <option value="{{ $curso->id }}">
-                            {{ $curso->nivel->nombre ?? '-' }} - {{ $curso->division }}
+                            {{ $curso->nivel->nombre ?? '-' }} - {{ $curso->division }} {{ $curso->turno }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- TURNO -->
-            <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Turno</label>
-                <select name="turno" required
-                        class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                    <option value="">Seleccionar Turno</option>
-                    <option value="mañana">🌅 Mañana</option>
-                    <option value="tarde">🌇 Tarde</option>
-                    <option value="noche">🌙 Noche</option>
-                </select>
-            </div>
-
-            <!-- AÑO -->
+            <!-- AÑO ESCOLAR-->
             <div>
                 <label class="block text-sm font-medium text-gray-600 mb-2">Año Escolar</label>
                 <select name="anio" required
