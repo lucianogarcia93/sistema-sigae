@@ -17,9 +17,11 @@
                 SIGAE
             </h1>
             <!-- Siempre debajo de SIGAE -->
-            <p class="text-white text-sm sm:text-base mt-2 sm:mt-3 leading-snug sm:leading-normal text-center tracking-tight sm:tracking-[0.11em] uppercase">
-                Sistema Integral de Gestión Académica Escolar
-            </p>
+            <div class="max-w-[90%] sm:max-w-full mx-auto">
+                <p class="text-white text-xs sm:text-sm mt-1 sm:mt-2 tracking-[0.11em] uppercase">
+                    Sistema Integral de Gestión Académica Escolar
+                </p>   
+            </div>
         </div>
 
         <!-- CARD LOGIN -->
