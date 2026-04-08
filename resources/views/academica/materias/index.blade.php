@@ -55,7 +55,7 @@
                 @forelse($materias as $materia)
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4">#{{ $materia->id }}</td>
-                    <td class="px-6 py-4 font-medium">{{ $materia->nombre }}</td>
+                    <td class="px-6 py-4">{{ $materia->nombre }}</td>
                     <td class="px-6 py-4">{{ $materia->profesor->nombre ?? '-' }} {{ $materia->profesor->apellido ?? '' }}</td>
                     <td class="px-6 py-4">
                         @if($materia->activo)
