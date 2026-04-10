@@ -177,7 +177,7 @@
 
     <div class="flex justify-center pb-10 md:pb-20 px-2">
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-3xl w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 max-w-3xl w-full">
 
             <a href="{{ route('alumno.notificaciones') }}"
                class="relative bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
