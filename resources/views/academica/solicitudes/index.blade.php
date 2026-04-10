@@ -67,7 +67,7 @@
                     <td class="px-6 py-4">{{ $s->apellido }}</td>
                     <!--<td class="px-6 py-4">{{ $s->dni }}</td>-->
                     <td class="px-6 py-4">{{ $s->email }}</td>
-                    <td class="px-6 py-4">{{ optional($s->curso)->division ?? '-' }} - {{ optional($s->curso->nivel)->nombre ?? '-' }}</td>
+                    <td class="px-6 py-4">{{ optional($s->curso)->division ?? '-' }} - {{ optional($s->curso->nivel)->nombre ?? '-' }} - {{ optional($s->curso->turno)->nombre ?? '-' }}</td>
 
                     <!-- ESTADO -->
                     <td class="px-6 py-4">
