@@ -28,25 +28,25 @@
 {{-- ================= ADMIN LAYOUT ================= --}}
 @if($user && $user->role && $user->role->name === 'admin')
 
-<div class="flex flex-col md:flex-row min-h-screen">
+<div x-data="{ open: false }" class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- OVERLAY (fondo oscuro en móvil) -->
+    <div x-show="open" @click="open = false"
+        class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden">
+    </div>
 
     <!-- SIDEBAR -->
     <aside id="sidebar"
-           class="w-full md:w-64 bg-blue-700 text-white p-4 md:p-6 space-y-6 flex-shrink-0
-           transition-all duration-300 overflow-hidden">
+        class="fixed md:static inset-y-0 left-0 w-64 bg-blue-700 text-white p-6 space-y-6 flex-shrink-0
+               transform transition-transform duration-300 z-50
+               md:translate-x-0"
+        :class="open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
 
         <!-- HEADER -->
         <div class="flex items-center gap-3">
-
-            <button id="toggleSidebar"
-                    class="p-2 rounded-lg hover:bg-blue-600 transition text-xl">
-                ☰
-            </button>
-
-            <h1 class="text-sm font-bold tracking-wide whitespace-nowrap menu-text">
+            <h1 class="text-sm font-bold tracking-wide whitespace-nowrap">
                 Panel De Control
             </h1>
-
         </div>
 
         <!-- NAV -->
@@ -61,79 +61,66 @@
             <!-- ACADÉMICA -->
             <div>
                 <button @click="openMenu = openMenu === 'academica' ? '' : 'academica'"
-                        class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    <span class="menu-text">📚 Gestión Académica</span>
+                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
+                    📚 Gestión Académica
                 </button>
 
-                <div x-show="openMenu === 'academica'" class="ml-0 md:ml-4 space-y-2 mt-2">
-                    <a href="{{ route('academica.niveles.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">🎓 Niveles</a>
-                    <a href="{{ route('academica.cursos.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📖 Cursos</a>
-                    <a href="{{ route('academica.alumnos.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">👨‍🎓 Alumnos</a>
-                    <a href="{{ route('academica.materias.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📚 Materias</a>
-                    <a href="{{ route('academica.profesores.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">👨‍🏫 Profesores</a>
-                    <a href="{{ route('academica.solicitudes.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📬 Solicitudes</a>
+                <div x-show="openMenu === 'academica'" class="ml-2 space-y-2 mt-2">
+                    <a href="{{ route('academica.niveles.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🎓 Niveles</a>
+                    <a href="{{ route('academica.cursos.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📖 Cursos</a>
+                    <a href="{{ route('academica.alumnos.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">👨‍🎓 Alumnos</a>
+                    <a href="{{ route('academica.materias.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📚 Materias</a>
+                    <a href="{{ route('academica.profesores.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">👨‍🏫 Profesores</a>
+                    <a href="{{ route('academica.solicitudes.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📬 Solicitudes</a>
                 </div>
             </div>
 
             <!-- ASISTENCIAS -->
             <div>
                 <button @click="openMenu = openMenu === 'asistencia' ? '' : 'asistencia'"
-                        class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    <span class="menu-text">🕒 Registro Asistencias</span>
+                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
+                    🕒 Registro Asistencias
                 </button>
 
-                <div x-show="openMenu === 'asistencia'" class="ml-0 md:ml-4 space-y-2 mt-2">
-                    <a href="{{ route('asistencia.asistencia_alumno.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📌 Asistencia Alumnos</a>
+                <div x-show="openMenu === 'asistencia'" class="ml-2 space-y-2 mt-2">
+                    <a href="{{ route('asistencia.asistencia_alumno.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📌 Asistencia Alumnos</a>
                 </div>
             </div>
 
             <!-- CALENDARIO -->
             <div>
                 <button @click="openMenu = openMenu === 'calendario' ? '' : 'calendario'"
-                        class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    <span class="menu-text">📅 Calendario Académico</span>
+                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
+                    📅 Calendario Académico
                 </button>
 
-                <div x-show="openMenu === 'calendario'" class="ml-0 md:ml-4 space-y-2 mt-2">
-                    <a href="{{ route('calendario.feriados.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">🎉 Feriados - Sin clases</a>
-                    <a href="{{ route('calendario.justificaciones.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📝 Justificaciones</a>
-                    <a href="{{ route('calendario.calificaciones.index') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">🅰️ Calificaciones</a>
+                <div x-show="openMenu === 'calendario'" class="ml-2 space-y-2 mt-2">
+                    <a href="{{ route('calendario.feriados.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🎉 Feriados</a>
+                    <a href="{{ route('calendario.justificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📝 Justificaciones</a>
+                    <a href="{{ route('calendario.calificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🅰️ Calificaciones</a>
                 </div>
             </div>
 
             <!-- REPORTES -->
             <div>
                 <button @click="openMenu = openMenu === 'reportes' ? '' : 'reportes'"
-                        class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    <span class="menu-text">📊 Reportes</span>
+                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
+                    📊 Reportes
                 </button>
 
-                <div x-show="openMenu === 'reportes'" class="ml-0 md:ml-4 space-y-2 mt-2">
-                    <a href="{{ route('reportes.generales') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📈 Reportes Generales</a>
-                    <a href="{{ route('reportes.excel') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📈 Exportar Excel</a>
-                    <a href="{{ route('reportes.alumnos.estadistica') }}"
-                       class="block px-3 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap menu-text">📄 Alumnos PDF</a>
+                <div x-show="openMenu === 'reportes'" class="ml-2 space-y-2 mt-2">
+                    <a href="{{ route('reportes.generales') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📈 Reportes Generales</a>
+                    <a href="{{ route('reportes.excel') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📊 Excel</a>
+                    <a href="{{ route('reportes.alumnos.estadistica') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📄 PDF</a>
                 </div>
             </div>
 
         </nav>
 
         <!-- LOGOUT -->
-        <form method="POST" action="{{ route('logout') }}" class="pt-4 md:pt-6">
+        <form method="POST" action="{{ route('logout') }}" class="pt-6">
             @csrf
-            <button class="w-full bg-red-500 hover:bg-red-600 py-2 rounded-lg transition whitespace-nowrap menu-text">
+            <button class="w-full bg-red-500 hover:bg-red-600 py-2 rounded-lg transition">
                 Cerrar sesión
             </button>
         </form>
@@ -141,9 +128,25 @@
     </aside>
 
     <!-- MAIN -->
-    <main class="flex-1 p-4 md:p-10 overflow-auto">
-        @yield('content')
-    </main>
+    <div class="flex-1 flex flex-col">
+
+        <!-- HEADER MOBILE -->
+        <div class="md:hidden flex items-center bg-white shadow px-4 py-3">
+            <button @click="open = true" class="text-2xl mr-3">
+                ☰
+            </button>
+
+            <h1 class="text-lg font-bold text-gray-800">
+                Panel Administrador
+            </h1>
+        </div>
+
+        <!-- CONTENIDO -->
+        <main class="flex-1 p-4 md:p-10 overflow-auto">
+            @yield('content')
+        </main>
+
+    </div>
 
 </div>
 
