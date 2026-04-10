@@ -126,8 +126,8 @@
 
                     <div x-show="openMenu === 'reportes'" x-transition class="ml-2 space-y-2 mt-2">
                         <a href="{{ route('reportes.generales') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📈 Reportes Generales</a>
-                        <a href="{{ route('reportes.excel') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📊 Excel</a>
-                        <a href="{{ route('reportes.alumnos.estadistica') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📄 PDF</a>
+                        <a href="{{ route('reportes.excel') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📊 Exportar Excel</a>
+                        <a href="{{ route('reportes.alumnos.estadistica') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📄 Alumnos PDF</a>
                     </div>
                 </div>
 
