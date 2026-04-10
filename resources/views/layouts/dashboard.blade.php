@@ -28,102 +28,120 @@
 {{-- ================= ADMIN LAYOUT ================= --}}
 @if($user && $user->role && $user->role->name === 'admin')
 
-<div x-data="{ open: false }" class="flex flex-col md:flex-row min-h-screen">
+<div x-data="{ open: false, collapsed: false }" class="flex flex-col md:flex-row min-h-screen">
 
-    <!-- OVERLAY (fondo oscuro en móvil) -->
-    <div x-show="open" @click="open = false"
+    <!-- OVERLAY (móvil) -->
+    <div x-show="open" x-transition @click="open = false"
         class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden">
     </div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar"
-        class="fixed md:static inset-y-0 left-0 w-64 bg-blue-700 text-white p-6 space-y-6 flex-shrink-0
-               transform transition-transform duration-300 z-50
-               md:translate-x-0"
-        :class="open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
+    <aside
+        class="fixed md:static inset-y-0 left-0 bg-blue-700 text-white p-4 space-y-6 flex-shrink-0
+               transform transition-all duration-300 z-50"
+        :class="[
+            open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+            collapsed ? 'md:w-10' : 'md:w-64',
+            'w-64'
+        ]">
 
-        <!-- HEADER -->
-        <div class="flex items-center gap-3">
-            <h1 class="text-sm font-bold tracking-wide whitespace-nowrap">
+        <!-- HEADER (SIEMPRE visible) -->
+        <div 
+            class="flex items-center justify-center gap-3 mt-2"
+            :class="!collapsed ? 'md:-ml-8' : ''">
+
+            <button 
+                @click="window.innerWidth < 768 ? open = true : collapsed = !collapsed"
+                class="text-xl p-1 rounded hover:bg-blue-600 transition">
+                ☰
+            </button>
+
+            <h1 x-show="!collapsed" class="text-lg font-bold whitespace-nowrap">
                 Panel De Control
             </h1>
+
         </div>
 
-        <!-- NAV -->
-        <nav class="space-y-3 text-sm"
-            x-data="{
-                openMenu: '{{ request()->is('academica/*') ? 'academica' :
-                            (request()->is('asistencia/*') ? 'asistencia' :
-                            (request()->is('calendario/*') ? 'calendario' :
-                            (request()->is('reportes/*') ? 'reportes' : ''))) }}'
-            }">
+        <!-- TODO EL CONTENIDO (se oculta cuando collapsed) -->
+        <div x-show="!collapsed" x-transition>
 
-            <!-- ACADÉMICA -->
-            <div>
-                <button @click="openMenu = openMenu === 'academica' ? '' : 'academica'"
-                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    📚 Gestión Académica
-                </button>
+            <!-- NAV -->
+            <nav class="space-y-3 text-sm"
+                x-data="{
+                    openMenu: '{{ request()->is('academica/*') ? 'academica' :
+                                (request()->is('asistencia/*') ? 'asistencia' :
+                                (request()->is('calendario/*') ? 'calendario' :
+                                (request()->is('reportes/*') ? 'reportes' : ''))) }}'
+                }">
 
-                <div x-show="openMenu === 'academica'" class="ml-2 space-y-2 mt-2">
-                    <a href="{{ route('academica.niveles.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🎓 Niveles</a>
-                    <a href="{{ route('academica.cursos.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📖 Cursos</a>
-                    <a href="{{ route('academica.alumnos.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">👨‍🎓 Alumnos</a>
-                    <a href="{{ route('academica.materias.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📚 Materias</a>
-                    <a href="{{ route('academica.profesores.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">👨‍🏫 Profesores</a>
-                    <a href="{{ route('academica.solicitudes.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📬 Solicitudes</a>
+                <!-- ACADÉMICA -->
+                <div>
+                    <button @click="openMenu = openMenu === 'academica' ? '' : 'academica'"
+                        class="w-full px-3 py-2 rounded-lg hover:bg-blue-600 text-left">
+                        📚 Gestión Académica
+                    </button>
+
+                    <div x-show="openMenu === 'academica'" x-transition class="ml-2 space-y-2 mt-2">
+                        <a href="{{ route('academica.niveles.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🎓 Niveles</a>
+                        <a href="{{ route('academica.cursos.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📖 Cursos</a>
+                        <a href="{{ route('academica.alumnos.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">👨‍🎓 Alumnos</a>
+                        <a href="{{ route('academica.materias.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📚 Materias</a>
+                        <a href="{{ route('academica.profesores.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">👨‍🏫 Profesores</a>
+                        <a href="{{ route('academica.solicitudes.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📬 Solicitudes</a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- ASISTENCIAS -->
-            <div>
-                <button @click="openMenu = openMenu === 'asistencia' ? '' : 'asistencia'"
-                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    🕒 Registro Asistencias
-                </button>
+                <!-- ASISTENCIAS -->
+                <div>
+                    <button @click="openMenu = openMenu === 'asistencia' ? '' : 'asistencia'"
+                        class="w-full px-3 py-2 rounded-lg hover:bg-blue-600 text-left">
+                        🕒 Registro Asistencias
+                    </button>
 
-                <div x-show="openMenu === 'asistencia'" class="ml-2 space-y-2 mt-2">
-                    <a href="{{ route('asistencia.asistencia_alumno.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📌 Asistencia Alumnos</a>
+                    <div x-show="openMenu === 'asistencia'" x-transition class="ml-2 space-y-2 mt-2">
+                        <a href="{{ route('asistencia.asistencia_alumno.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📌 Asistencia Alumnos</a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- CALENDARIO -->
-            <div>
-                <button @click="openMenu = openMenu === 'calendario' ? '' : 'calendario'"
-                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    📅 Calendario Académico
-                </button>
+                <!-- CALENDARIO -->
+                <div>
+                    <button @click="openMenu = openMenu === 'calendario' ? '' : 'calendario'"
+                        class="w-full px-3 py-2 rounded-lg hover:bg-blue-600 text-left">
+                        📅 Calendario Académico
+                    </button>
 
-                <div x-show="openMenu === 'calendario'" class="ml-2 space-y-2 mt-2">
-                    <a href="{{ route('calendario.feriados.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🎉 Feriados</a>
-                    <a href="{{ route('calendario.justificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📝 Justificaciones</a>
-                    <a href="{{ route('calendario.calificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🅰️ Calificaciones</a>
+                    <div x-show="openMenu === 'calendario'" x-transition class="ml-2 space-y-2 mt-2">
+                        <a href="{{ route('calendario.feriados.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🎉 Feriados</a>
+                        <a href="{{ route('calendario.justificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📝 Justificaciones</a>
+                        <a href="{{ route('calendario.calificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🅰️ Calificaciones</a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- REPORTES -->
-            <div>
-                <button @click="openMenu = openMenu === 'reportes' ? '' : 'reportes'"
-                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                    📊 Reportes
-                </button>
+                <!-- REPORTES -->
+                <div>
+                    <button @click="openMenu = openMenu === 'reportes' ? '' : 'reportes'"
+                        class="w-full px-3 py-2 rounded-lg hover:bg-blue-600 text-left">
+                        📊 Reportes
+                    </button>
 
-                <div x-show="openMenu === 'reportes'" class="ml-2 space-y-2 mt-2">
-                    <a href="{{ route('reportes.generales') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📈 Reportes Generales</a>
-                    <a href="{{ route('reportes.excel') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📊 Excel</a>
-                    <a href="{{ route('reportes.alumnos.estadistica') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📄 PDF</a>
+                    <div x-show="openMenu === 'reportes'" x-transition class="ml-2 space-y-2 mt-2">
+                        <a href="{{ route('reportes.generales') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📈 Reportes Generales</a>
+                        <a href="{{ route('reportes.excel') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📊 Excel</a>
+                        <a href="{{ route('reportes.alumnos.estadistica') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📄 PDF</a>
+                    </div>
                 </div>
-            </div>
 
-        </nav>
+            </nav>
 
-        <!-- LOGOUT -->
-        <form method="POST" action="{{ route('logout') }}" class="pt-6">
-            @csrf
-            <button class="w-full bg-red-500 hover:bg-red-600 py-2 rounded-lg transition">
-                Cerrar sesión
-            </button>
-        </form>
+            <!-- LOGOUT -->
+            <form method="POST" action="{{ route('logout') }}" class="pt-6">
+                @csrf
+                <button class="w-full bg-red-500 hover:bg-red-600 py-2 rounded-lg transition">
+                    Cerrar sesión
+                </button>
+            </form>
+
+        </div>
 
     </aside>
 
@@ -147,108 +165,6 @@
         </main>
 
     </div>
-
-</div>
-
-@endif
-
-{{-- ================= ALUMNO LAYOUT ================= --}}
-@if($user && $user->role && $user->role->name === 'alumno')
-
-<div class="min-h-screen bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700">
-
-    <!-- LOGOUT -->
-    <div class="flex justify-end p-4 md:p-6">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="bg-red-500 hover:bg-red-600 text-white px-4 md:px-5 py-2 rounded-lg shadow">
-                Cerrar sesión
-            </button>
-        </form>
-    </div>
-
-    <div class="text-center mb-8 md:mb-12 px-4">
-        <h2 class="text-3xl md:text-4xl font-bold text-white">
-            👋 Bienvenido {{ $user->name }}
-        </h2>
-        <p class="text-blue-100 mt-1 md:mt-2 text-sm md:text-base">
-            Panel del alumno - Sistema SIGAE
-        </p>
-    </div>
-
-    @if(request()->is('dashboard'))
-
-    <div class="flex justify-center pb-10 md:pb-20 px-2">
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 max-w-3xl w-full">
-
-            <a href="{{ route('alumno.notificaciones') }}"
-               class="relative bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-
-                @if($cantidadNotificaciones > 0)
-                    <span class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                        {{ $cantidadNotificaciones }}
-                    </span>
-                @endif
-
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">🔔</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Notificaciones</h3>
-
-            </a>
-
-            <a href="{{ route('alumno.notas') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📊</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Notas</h3>
-            </a>
-
-            <a href="{{ route('alumno.asistencias.historial') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📊</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Asistencias</h3>
-            </a>
-
-            <a href="{{ route('alumno.feriados') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📅</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Feriados</h3>
-            </a>
-
-            <a href="{{ route('alumno.resumen') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📈</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Resumen General</h3>
-            </a>
-
-            <a href="{{ route('alumno.datos') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">👤</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Datos</h3>
-            </a>
-
-            <a href="{{ route('alumno.password') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">🔒</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Cambiar Contraseña</h3>
-            </a>
-
-            <a href="{{ route('alumno.justificacion.motivo') }}"
-               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
-                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📝</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Justificaciones</h3>
-            </a>
-
-        </div>
-
-    </div>
-
-    @else
-
-    <div class="max-w-4xl mx-auto pb-10 md:pb-20 px-4">
-        @yield('content')
-    </div>
-
-    @endif
 
 </div>
 
