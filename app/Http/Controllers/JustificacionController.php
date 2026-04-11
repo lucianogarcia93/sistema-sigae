@@ -40,17 +40,28 @@ class JustificacionController extends Controller
     | LISTADO ADMIN
     |------------------------------------------------
     */
-    public function indexAdmin()
+    public function indexAdmin(Request $request)
     {
         if (optional(auth()->user()->role)->name !== 'admin') {
             abort(403);
         }
 
-        $justificaciones = Justificacion::with([
+        $query = Justificacion::with([
             'asistenciaAlumno.alumno'
-        ])
-        ->latest()
-        ->get();
+        ]);
+
+        if ($request->filled('search')) {
+            $query->where('motivo', 'like', '%' . $request->search . '%')
+                ->orWhere('estado', 'like', '%' . $request->search . '%')
+                ->orWhereHas('asistenciaAlumno.alumno', function ($q) use ($request) {
+                    $q->where('nombre', 'like', '%' . $request->search . '%')
+                    ->orWhere('apellido', 'like', '%' . $request->search . '%');
+                });
+        }
+
+        $justificaciones = $query
+            ->orderByDesc('updated_at')
+            ->get();
 
         return view('calendario.justificaciones.index', compact('justificaciones'));
     }

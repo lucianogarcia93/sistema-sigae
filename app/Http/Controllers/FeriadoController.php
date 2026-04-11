@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 
 class FeriadoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $feriados = Feriado::orderBy('fecha','desc')->get();
+        $query = Feriado::query();
+
+        if ($request->filled('search')) {
+            $query->where('descripcion', 'like', '%' . $request->search . '%')
+                ->orWhere('tipo', 'like', '%' . $request->search . '%')
+                ->orWhereDate('fecha', $request->search);
+        }
+
+        $feriados = $query->orderBy('fecha', 'desc')->get();
 
         return view('calendario.feriado.index', compact('feriados'));
     }
