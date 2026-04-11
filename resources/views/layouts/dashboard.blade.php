@@ -111,7 +111,7 @@
                     </button>
 
                     <div x-show="openMenu === 'calendario'" x-transition class="ml-2 space-y-2 mt-2">
-                        <a href="{{ route('calendario.feriados.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🚫 Días No Laborables</a>
+                        <a href="{{ route('calendario.feriados.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🚫 Feriados</a>
                         <a href="{{ route('calendario.justificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">📝 Justificaciones</a>
                         <a href="{{ route('calendario.calificaciones.index') }}" class="block px-3 py-2 rounded-lg hover:bg-blue-600">🅰️ Calificaciones</a>
                     </div>
@@ -229,7 +229,7 @@
             <a href="{{ route('alumno.feriados') }}"
                class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
                 <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📅</div>
-                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Días No Laborables</h3>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Feriados</h3>
             </a>
 
             <a href="{{ route('alumno.resumen') }}"
