@@ -170,31 +170,107 @@
 
 @endif
 
-<script>
+{{-- ================= ALUMNO LAYOUT ================= --}}
+@if($user && $user->role && $user->role->name === 'alumno')
 
-document.addEventListener("DOMContentLoaded", function(){
+<div class="min-h-screen bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700">
 
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("toggleSidebar");
+    <!-- LOGOUT -->
+    <div class="flex justify-end p-4 md:p-6">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button class="bg-red-500 hover:bg-red-600 text-white px-4 md:px-5 py-2 rounded-lg shadow">
+                Cerrar sesión
+            </button>
+        </form>
+    </div>
 
-    if(!sidebar || !toggleBtn) return;
+    <div class="text-center mb-8 md:mb-12 px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-white">
+            👋 Bienvenido {{ $user->name }}
+        </h2>
+        <p class="text-blue-100 mt-1 md:mt-2 text-sm md:text-base">
+            Panel del alumno - Sistema SIGAE
+        </p>
+    </div>
 
-    toggleBtn.addEventListener("click", function(){
+    @if(request()->is('dashboard'))
 
-        sidebar.classList.toggle("w-16");
-        sidebar.classList.toggle("w-64");
-        sidebar.classList.toggle("sidebar-mini");
+    <div class="flex justify-center pb-10 md:pb-20 px-2">
 
-        localStorage.setItem(
-            "sidebarCollapsed",
-            sidebar.classList.contains("w-16")
-        );
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 max-w-3xl w-full">
 
-    });
+            <a href="{{ route('alumno.notificaciones') }}"
+               class="relative bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
 
-});
+                @if($cantidadNotificaciones > 0)
+                    <span class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {{ $cantidadNotificaciones }}
+                    </span>
+                @endif
 
-</script>
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">🔔</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Notificaciones</h3>
+
+            </a>
+
+            <a href="{{ route('alumno.notas') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📊</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Notas</h3>
+            </a>
+
+            <a href="{{ route('alumno.asistencias.historial') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📊</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Asistencias</h3>
+            </a>
+
+            <a href="{{ route('alumno.feriados') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📅</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Feriados</h3>
+            </a>
+
+            <a href="{{ route('alumno.resumen') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📈</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Resumen General</h3>
+            </a>
+
+            <a href="{{ route('alumno.datos') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">👤</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Mis Datos</h3>
+            </a>
+
+            <a href="{{ route('alumno.password') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">🔒</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Cambiar Contraseña</h3>
+            </a>
+
+            <a href="{{ route('alumno.justificacion.motivo') }}"
+               class="bg-white shadow-lg rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:scale-105 transition">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-4">📝</div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800">Justificaciones</h3>
+            </a>
+
+        </div>
+
+    </div>
+
+    @else
+
+    <div class="max-w-4xl mx-auto pb-10 md:pb-20 px-4">
+        @yield('content')
+    </div>
+
+    @endif
+
+</div>
+
+@endif
 
 </body>
 </html>
